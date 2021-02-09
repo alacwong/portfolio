@@ -6,12 +6,13 @@ import Particles from "react-particles-js";
 function App() {
   return (
       <div>
-          <h1>Hello</h1>
+          <Home></Home>
           <Particles
+              className="background"
               params={{
                   "particles": {
                       "number": {
-                          "value": 200
+                          "value": 150
                       },
                       "size": {
                           "value": 3
