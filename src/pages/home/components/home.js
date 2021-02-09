@@ -15,8 +15,8 @@ export default class Home extends Component {
                 <h2>Software Engineer | 3rd Year CS & Statistics @ UofT</h2>
                 <span className="social">
                     <a href="https://github.com/alacwong"><FaGithub className="icon" /></a>
-                    <FaLinkedin className="icon"/>
-                    <FiMail className="icon" />
+                    <a href="https://www.linkedin.com/in/alacwong/"><FaLinkedin className="icon"/></a>
+                    <a href="mailto:alac.wong@mail.utoronto.ca"><FiMail className="icon"/></a>
                 </span>
             </FadeIn>
         )
