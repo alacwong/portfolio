@@ -2,11 +2,16 @@ import './App.css';
 import React from "react";
 import Home from "./pages/home/components/home";
 import Particles from "react-particles-js";
+import {
+    BrowserRouter as Router,
+} from "react-router-dom";
 
 function App() {
   return (
       <div>
-          <Home></Home>
+          <Router>
+              <Home/>
+          </Router>
           <Particles
               className="background"
               params={{
