@@ -1,40 +1,43 @@
-import React, { Component } from "react";
+import React, {Component, useEffect, useState} from "react";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import CSSTransition from "react-transition-group/CSSTransition";
 import '../css/home.scss'
 
-export default class Quote extends Component{
+export default function Quote() {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            quotes: [
-                '"Some inspirational quote"',
-                '"Another inspirational quote"',
-                '"Yet another inspirational quote"',
-                '"And one"'
-            ],
-            index: 0
-        };
+
+    const quotes = [
+        '"Some inspirational quote"',
+        '"Another inspirational quote"',
+        '"Yet another inspirational quote"',
+        '"And one"'
+    ]
+    const [index, setIndex] = useState(0);
+
+    // Shuffle array
+    for (let i = quotes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = quotes[i];
+        quotes[i] = quotes[j];
+        quotes[j] = temp;
     }
 
-    componentDidMount() {
-        setInterval(() => this.setState(
-            {index: (this.state.index +  1) % this.state.quotes.length}), 5000);
-    }
+    // Change quote
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setIndex((index + 1)% quotes.length);
+            clearInterval(timer);
+        }, 1000);
+    })
 
-
-    // do this shit tmr
-    // https://github.com/reactjs/react-transition-group/blob/master/Migration.md
-    render() {
-
-        return (
+    return (
+        <TransitionGroup>
             <CSSTransition
-                classNames="animation"
+                classNames="fade"
                 timeout={{ enter: 500, exit: 300 }}
             >
-                {this.state.quotes[this.state.index]}
+                <h1 className='fade'>{quotes[index]}</h1>
             </CSSTransition>
-        )
-    }
+        </TransitionGroup>
+    )
 }

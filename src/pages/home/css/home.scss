@@ -32,20 +32,4 @@
     h1 {
         font-style: italic;
     }
-
-    .animation-enter {
-        opacity: 0.01;
-        .animation-enter-active {
-            opacity: 1;
-            transition: opacity 500ms ease-in;
-        }
-    }
-
-    .animation-exit {
-        opacity: 1;
-        .animation-exit-active {
-            opacity: 0.01;
-            transition: opacity 300ms ease-in;
-        }
-    }
 }
