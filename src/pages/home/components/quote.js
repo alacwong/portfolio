@@ -27,7 +27,7 @@ export default function Quote() {
         const timer = setInterval(() => {
             setIndex((index + 1)% quotes.length);
             clearInterval(timer);
-        }, 1000);
+        }, 10000);
     })
 
     return (
