@@ -2,15 +2,13 @@ import './App.css';
 import React from "react";
 import Home from "./pages/home/components/home";
 import Particles from "react-particles-js";
-import {
-    BrowserRouter as Router,
-} from "react-router-dom";
+import { BrowserRouter  as Router, Route} from 'react-router-dom'
 
 function App() {
   return (
       <div>
           <Router>
-              <Home/>
+              <Route path="/" component={Home}/>
           </Router>
           <Particles
               className="background"

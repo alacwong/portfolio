@@ -1,7 +1,7 @@
 .intro {
     color: white;
     margin-left: 12%;
-    margin-top: 20%;
+    margin-top: 15%;
 
     h1 {
         font-size: 45px;
@@ -23,5 +23,29 @@
         width: 2em;
         height: 2em;
         margin-right: 5em;
+    }
+}
+
+.quote {
+    margin-top: 8%;
+
+    h1 {
+        font-style: italic;
+    }
+
+    .animation-enter {
+        opacity: 0.01;
+        .animation-enter-active {
+            opacity: 1;
+            transition: opacity 500ms ease-in;
+        }
+    }
+
+    .animation-exit {
+        opacity: 1;
+        .animation-exit-active {
+            opacity: 0.01;
+            transition: opacity 300ms ease-in;
+        }
     }
 }
