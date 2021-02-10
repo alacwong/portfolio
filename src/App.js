@@ -27,7 +27,7 @@ function App() {
                       "events": {
                           "onhover": {
                               "enable": true,
-                              "mode": "repulse"
+                              "mode": "repulse",
                           }
                       }
                   }

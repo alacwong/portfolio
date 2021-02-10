@@ -33,7 +33,7 @@ code {
   .nav-element {
     margin-top: 1%;
     margin-right: 2%;
-    transition: all .5s ease-in;
+    transition: all .2s ease-in;
     border-bottom: transparent;
 
     a {
@@ -43,7 +43,7 @@ code {
 
   }
   .nav-element:hover {
-    border-bottom: 1px white solid;
+    border-bottom: 2px white solid;
   }
 }
 

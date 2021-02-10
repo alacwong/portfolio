@@ -36,7 +36,7 @@ export default function Quote() {
                 classNames="fade"
                 timeout={{ enter: 500, exit: 300 }}
             >
-                <h1 className='fade'>{quotes[index]}</h1>
+                <h1 className='quote'>{quotes[index]}</h1>
             </CSSTransition>
         </TransitionGroup>
     )
