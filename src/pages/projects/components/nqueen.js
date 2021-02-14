@@ -8,6 +8,7 @@ import "bootstrap-slider/dist/css/bootstrap-slider.css"
 export default function NQueens() {
 
     const [n, setN] = useState(4);
+    const [recursiveCalls, setRecursiveCalls] = useState(0);
     let useOptimizationOne = useState(true);
 
     // initialize board
@@ -81,9 +82,9 @@ export default function NQueens() {
         }
     }
 
-    let recursiveCalls = 0;
     const backtrack = (variables) => {
-        recursiveCalls ++;
+        console.log('running?');
+        setRecursiveCalls(recursiveCalls + 1);
         if (variables.length === 0){
             return true;
         }
@@ -101,6 +102,8 @@ export default function NQueens() {
             if (board[queen][i] === 0) {
                 board[queen][i] = -1;
                 place(queen, i,1);
+                console.log('setting');
+                setBoard(copy(board));
                 solved = backtrack([...variables]);
                 if (!solved) {
                     // reverse effects
@@ -155,6 +158,29 @@ export default function NQueens() {
         setN(e.target.value);
     }
 
+    const copy = (array) => {
+        const temp = []
+        for (let i=0; i < n; i++) {
+            temp.push([...array[i]]);
+        }
+        return temp;
+    }
+
+    let algorithm = 'backtrack';
+
+    const run = () => {
+        if (algorithm === 'backtrack') {
+            console.log('backtracking');
+            const variables = []
+            for (let i=0; i< n; i++) {
+                variables.push(i);
+            }
+            clearBoard(n);
+            backtrack(variables);
+            console.log('done');
+        }
+    }
+
 
     return (
         <FadeIn>
@@ -191,6 +217,7 @@ export default function NQueens() {
                             min={4}
                         />
                     </div>
+                    <button onClick={run}>Backtrack</button>
                 </div>
             </div>
         </FadeIn>
