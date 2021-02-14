@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import FadeIn from "react-fade-in";
 import '../styling/queen.scss'
+import ReactBootstrapSlider from "react-bootstrap-slider/dist/react-bootstrap-slider";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-slider/dist/css/bootstrap-slider.css"
 
 export default function NQueens() {
 
-    const n = 8;
+    const [n, setN] = useState(8);
     let board = [];
 
     // initialize board
@@ -158,6 +161,11 @@ export default function NQueens() {
         }
     )
 
+    // change N
+    const onChange = (e) => {
+        setN(e.target.value);
+    }
+
 
     return (
         <FadeIn>
@@ -173,6 +181,19 @@ export default function NQueens() {
                 <div className='chess'>
                     <div className='board'>
                         { boardComponent}
+                    </div>
+                    <p>Recursive Calls: {recursiveCalls}</p>
+                    <div className='controls'>
+                        <ReactBootstrapSlider
+                            className='slider'
+                            change={onChange}
+                            orientation="horizontal"
+                            value={n}
+                            step={1}
+                            max={16}
+                            min={4}
+                            tooltip={n}
+                        />
                     </div>
                 </div>
             </div>

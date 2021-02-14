@@ -19,13 +19,23 @@
 
   .chess {
     width: 400px;
-
     .board {
       height: 400px;
       width: 400px;
       position: relative;
       .tile {
         display: inline-block;
+      }
+    }
+
+    p {
+      color: white;
+    }
+
+    .controls {
+      .slider {
+        z-index: 10;
+        color: white;
       }
     }
   }

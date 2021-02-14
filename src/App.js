@@ -5,9 +5,7 @@ import Projects from "./pages/projects/components/projects";
 import Particles from "react-particles-js";
 import {
     BrowserRouter as Router,
-    Switch,
     Route,
-    Link
 } from "react-router-dom";
 import NavBar from "./components/navbar/navbar";
 
