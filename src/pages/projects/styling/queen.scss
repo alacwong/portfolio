@@ -1,0 +1,32 @@
+
+.project {
+
+  display: flex;
+  margin: 0 15%;
+
+  .description {
+    width: calc(100% - 400px);
+    h1 {
+      color: #ffaf00;
+    }
+
+    ul {
+      li {
+        color: white;
+      }
+    }
+  }
+
+  .chess {
+    width: 400px;
+
+    .board {
+      height: 400px;
+      width: 400px;
+      position: relative;
+      .tile {
+        display: inline-block;
+      }
+    }
+  }
+}

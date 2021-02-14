@@ -1,8 +1,10 @@
 import React from "react";
+import FadeIn from "react-fade-in";
+import '../styling/queen.scss'
 
 export default function NQueens() {
 
-    const n = 20;
+    const n = 8;
     let board = [];
 
     // initialize board
@@ -21,6 +23,7 @@ export default function NQueens() {
     }
 
     let useOptimizationOne = true;
+
     // target rows with least amount of variables left
     const optimizationOne = (variables) => {
         let minRow = 0;
@@ -38,16 +41,6 @@ export default function NQueens() {
             }
         }
         return minRow;
-    }
-
-
-    const debug = (x) => {
-        console.log(x);
-        const s = []
-        for (let i=0; i < n; i++) {
-            s.push([...board[i]]);
-        }
-        console.log(s);
     }
 
     const validSquare = (i, j) => {
@@ -78,7 +71,6 @@ export default function NQueens() {
                 [x, y] = [x + directions[j][0], y + directions[j][1]];
             }
         }
-
     }
 
     let recursiveCalls = 0;
@@ -114,7 +106,6 @@ export default function NQueens() {
         return solved;
     }
 
-    console.log(backtrack(queens));
     for (let i=0; i<n; i++) {
         for (let j=0; j< n; j++) {
             if (board[i][j] === -1) {
@@ -124,10 +115,67 @@ export default function NQueens() {
             }
         }
     }
-    console.log(board);
-    console.log(recursiveCalls);
+
+    // Initialize board rendering
+    const boardData = [];
+
+    let arr1 = []
+    for (let i=0; i<n; i++) {
+        arr1.push(i%2);
+    }
+    boardData.push(arr1);
+
+    while (boardData.length < n) {
+        const temp = boardData[boardData.length - 1].map(data => (data + 1)%2);
+        boardData.push(temp);
+    }
+
+    // Board component
+    let boardComponent = boardData.map(
+        (row, rowIndex) => {
+            return <div>
+                {
+                    row.map((cell, cellIndex) => {
+                        let tileSize = `${400/n}px`
+                        if (cell === 1) {
+                            return <span
+                                className='tile'
+                                style={{backgroundColor: '#ffaf00', height: tileSize, width: tileSize}}
+                                key={`${rowIndex.toString() + cellIndex.toString()}`}>
+                                &nbsp;
+                            </span>
+                        } else {
+                            return <span
+                                className='tile'
+                                style={{backgroundColor: '#5f4203', height: tileSize, width: tileSize}}
+                                key={`${rowIndex + cellIndex + ''}`}>
+                                &nbsp;
+                            </span>
+                        }
+                    })
+                }
+            </div>
+        }
+    )
+
 
     return (
-        <h1>N-Queens</h1>
+        <FadeIn>
+            <div className='project'>
+                <div className='description'>
+                    <h1> Visualizer for N queens</h1>
+                    <ul>
+                        <li>The N Queen is the problem of placing N chess queens on an
+                            N×N chessboard so that no two queens attack each other </li>
+                        <li>Algorithmic visualizer for N queens problem</li>
+                    </ul>
+                </div>
+                <div className='chess'>
+                    <div className='board'>
+                        { boardComponent}
+                    </div>
+                </div>
+            </div>
+        </FadeIn>
     )
 }
