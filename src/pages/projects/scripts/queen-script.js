@@ -8,6 +8,7 @@ export class NQueenSolver{
             this.useOptimizationOne = false;
         }
     }
+
     optimizationOne(variables, chessBoard) {
         let minRow = 0;
         let minRowValue = this.n + 1;
@@ -56,7 +57,6 @@ export class NQueenSolver{
         }
     }
 
-
     backtrack(variables, chessBoard) {
         if (variables.length === 0){
             return true;
@@ -74,12 +74,14 @@ export class NQueenSolver{
         for (let i=0; i < this.n; i++) {
             if (chessBoard[queen][i] === 0) {
                 chessBoard[queen][i] = -1;
+                this.stateStack.push(this.copy(chessBoard));
                 this.place(queen, i,1, chessBoard);
                 solved = this.backtrack([...variables], chessBoard);
                 if (!solved) {
                     // reverse effects
                     this.place(queen, i,-1, chessBoard);
                     chessBoard[queen][i] = 0;
+                    this.stateStack.push(this.copy(chessBoard));
                 } else {
                     return solved
                 }
@@ -89,8 +91,9 @@ export class NQueenSolver{
     }
 
     solve(variables, board) {
+        this.stateStack = [];
         this.backtrack(variables, board);
-        console.log(board);
+        return this.stateStack;
     }
 
     copy(array) {

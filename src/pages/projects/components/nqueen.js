@@ -10,6 +10,11 @@ export default function NQueens() {
 
     const [n, setN] = useState(4);
     const [recursiveCalls, setRecursiveCalls] = useState(0);
+    // change N
+    const onChange = (e) => {
+        setBoard(clearBoard(e.target.value));
+        setN(e.target.value);
+    }
 
     // initialize board
     const clearBoard = (N) => {
@@ -31,7 +36,7 @@ export default function NQueens() {
     const brown = '#5f4203';
     let boardComponent = board.map(
         (row, rowIndex) => {
-            return <div>
+            return <div key={`Row: ${rowIndex}`}>
                 {
                     row.map((cell, cellIndex) => {
                         let tileSize = `${400/n}px`
@@ -59,25 +64,15 @@ export default function NQueens() {
         }
     )
 
-    // change N
-    const onChange = (e) => {
-        setBoard(clearBoard(e.target.value));
-        setN(e.target.value);
-    }
-
-    let algorithm = 'backtrack';
-
     const run = () => {
-        if (algorithm === 'backtrack') {
-            const variables = []
-            for (let i=0; i< n; i++) {
-                variables.push(i);
-            }
-           const solver = new NQueenSolver(n, 'backtrack');
-           solver.solve(variables, clearBoard(n));
+        const variables = []
+        for (let i=0; i< n; i++) {
+            variables.push(i);
         }
+        const solver = new NQueenSolver(n, 'optimization');
+        const stateStack = solver.solve(variables, clearBoard(n));
+        console.log(stateStack.length);
     }
-
 
     return (
         <FadeIn>
