@@ -134,6 +134,8 @@ export default function NQueens() {
     }
 
     // Board component
+    const yellow = '#ffaf00';
+    const brown = '#5f4203';
     let boardComponent = boardData.map(
         (row, rowIndex) => {
             return <div>
@@ -143,15 +145,15 @@ export default function NQueens() {
                         if (cell === 1) {
                             return <span
                                 className='tile'
-                                style={{backgroundColor: '#ffaf00', height: tileSize, width: tileSize}}
-                                key={`${rowIndex.toString() + cellIndex.toString()}`}>
+                                style={{backgroundColor: yellow, height: tileSize, width: tileSize}}
+                                key={`cell: ${rowIndex.toString() + cellIndex.toString()}`}>
                                 &nbsp;
                             </span>
                         } else {
                             return <span
                                 className='tile'
-                                style={{backgroundColor: '#5f4203', height: tileSize, width: tileSize}}
-                                key={`${rowIndex + cellIndex + ''}`}>
+                                style={{backgroundColor: brown, height: tileSize, width: tileSize}}
+                                key={`cell: ${rowIndex + cellIndex + ''}`}>
                                 &nbsp;
                             </span>
                         }
@@ -171,11 +173,18 @@ export default function NQueens() {
         <FadeIn>
             <div className='project'>
                 <div className='description'>
-                    <h1> Visualizer for N queens</h1>
+                    <h1> N-Queens Visualizer </h1>
                     <ul>
                         <li>The N Queen is the problem of placing N chess queens on an
                             N×N chessboard so that no two queens attack each other </li>
-                        <li>Algorithmic visualizer for N queens problem</li>
+                        <li>CSP optimizations to reduce backtracking search tree</li>
+                        <li>Built with React JS</li>
+                    </ul>
+                    <h3>Include visualizations for: </h3>
+                    <ul>
+                        <li>Recursive Backtracking</li>
+                        <li>Optimized Recursive Backtracking</li>
+                        <li>Random Permutations</li>
                     </ul>
                 </div>
                 <div className='chess'>
@@ -184,6 +193,7 @@ export default function NQueens() {
                     </div>
                     <p>Recursive Calls: {recursiveCalls}</p>
                     <div className='controls'>
+                        <p>N: </p>
                         <ReactBootstrapSlider
                             className='slider'
                             change={onChange}
@@ -192,7 +202,6 @@ export default function NQueens() {
                             step={1}
                             max={16}
                             min={4}
-                            tooltip={n}
                         />
                     </div>
                 </div>

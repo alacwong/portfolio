@@ -9,8 +9,8 @@ export default function NavBar () {
         { link: '/', content: 'Contact', key: '4'},
     ].map(
         data =>
-            <span className="nav-element">
-                <a href={data.link} key={data.key}>{data.content}</a>
+            <span className="nav-element" key={data.key}>
+                <a href={data.link}>{data.content}</a>
             </span>
     )
 

@@ -2,11 +2,16 @@
 .project {
 
   display: flex;
-  margin: 0 15%;
+  margin: 5% 15%;
 
   .description {
     width: calc(100% - 400px);
     h1 {
+      color: #ffaf00;
+    }
+
+    h3 {
+      font-size: 16px;
       color: #ffaf00;
     }
 
@@ -33,8 +38,9 @@
     }
 
     .controls {
-      .slider {
-        z-index: 10;
+      p {
+        display: inline-block;
+        margin-right: 5%;
         color: white;
       }
     }
