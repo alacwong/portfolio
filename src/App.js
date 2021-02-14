@@ -1,8 +1,14 @@
 import './App.css';
 import React from "react";
 import Home from "./pages/home/components/home";
+import Projects from "./pages/projects/components/projects";
 import Particles from "react-particles-js";
-import { BrowserRouter  as Router, Route} from 'react-router-dom'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 import NavBar from "./components/navbar/navbar";
 
 function App() {
@@ -10,7 +16,8 @@ function App() {
       <div>
           <NavBar/>
           <Router>
-              <Route path="/" component={Home}/>
+              <Route  exact path="/" component={Home}/>
+              <Route path="/projects" component={Projects}/>
           </Router>
           <Particles
               className="background"
