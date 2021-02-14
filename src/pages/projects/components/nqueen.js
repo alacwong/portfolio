@@ -2,7 +2,7 @@ import React from "react";
 
 export default function NQueens() {
 
-    const n = 8;
+    const n = 20;
     let board = [];
 
     // initialize board
@@ -20,7 +20,7 @@ export default function NQueens() {
         queens.push(i);
     }
 
-
+    let useOptimizationOne = true;
     // target rows with least amount of variables left
     const optimizationOne = (variables) => {
         let minRow = 0;
@@ -40,16 +40,6 @@ export default function NQueens() {
         return minRow;
     }
 
-    //select squares that least restrain other variables
-    const optimizationTwo = (index) => {
-        let least_restrained_index = -1;
-        let least_restrained_value = n + 1;
-        for (let i=0; i < n; i++) {
-
-            // count number of free variables
-            let count = 0;
-        }
-    }
 
     const debug = (x) => {
         console.log(x);
@@ -89,9 +79,7 @@ export default function NQueens() {
             }
         }
 
-        //debug('');
     }
-
 
     let recursiveCalls = 0;
     const backtrack = (variables) => {
@@ -100,13 +88,15 @@ export default function NQueens() {
             return true;
         }
 
-        const queen = variables.shift();
-        // const queen = optimizationOne(variables);
-        // variables.splice(variables.indexOf(queen), 1);
-
+        let queen;
+        if (useOptimizationOne) {
+            queen = optimizationOne(variables);
+            variables.splice(variables.indexOf(queen), 1);
+        } else {
+            queen = variables.shift();
+        }
 
         let solved = false;
-
         for (let i=0; i < n; i++) {
             if (board[queen][i] === 0) {
                 board[queen][i] = -1;
@@ -121,7 +111,6 @@ export default function NQueens() {
                 }
             }
         }
-
         return solved;
     }
 
