@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FadeIn from "react-fade-in";
 import '../styling/queen.scss'
 import ReactBootstrapSlider from "react-bootstrap-slider/dist/react-bootstrap-slider";
@@ -10,19 +10,21 @@ export default function NQueens() {
 
     const [n, setN] = useState(4);
     const [recursiveCalls, setRecursiveCalls] = useState(0);
+    let animationIndex = 0;
+    let animationStack = [];
     // change N
     const onChange = (e) => {
         setBoard(clearBoard(e.target.value));
         setN(e.target.value);
     }
 
-    // initialize board
+    // initialize empty board
     const clearBoard = (N) => {
         const array = []
         for (let i=0; i <N; i++) {
             const row = [];
             for (let j=0; j <N; j++) {
-                row.push(0);
+                row.push(-1);
             }
             array.push(row);
         }
@@ -31,7 +33,7 @@ export default function NQueens() {
 
     const [board, setBoard] = useState(    clearBoard(n));
 
-    // Board component
+    // Render Board
     const yellow = '#ffaf00';
     const brown = '#5f4203';
     let boardComponent = board.map(
@@ -70,9 +72,20 @@ export default function NQueens() {
             variables.push(i);
         }
         const solver = new NQueenSolver(n, 'optimization');
-        const stateStack = solver.solve(variables, clearBoard(n));
-        console.log(stateStack.length);
+        animationStack = solver.solve(variables, clearBoard(n));
+        animationIndex = 0;
+        setBoard(animationStack[animationIndex])
     }
+
+
+
+    // useEffect( () => {
+    //     if (animationIndex < animationStack.length) {
+    //         animationIndex ++;
+    //         setBoard(animationStack[animationIndex]);
+    //         console.log('effect');
+    //     }
+    // })
 
     return (
         <FadeIn>
