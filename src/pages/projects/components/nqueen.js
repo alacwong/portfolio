@@ -7,17 +7,23 @@ import "bootstrap-slider/dist/css/bootstrap-slider.css"
 
 export default function NQueens() {
 
-    const [n, setN] = useState(8);
-    let board = [];
+    const [n, setN] = useState(4);
+    let useOptimizationOne = useState(true);
 
     // initialize board
-    for (let i=0; i <n; i++) {
-        const row = [];
-        for (let j=0; j <n; j++) {
-            row.push(0);
+    const clearBoard = ( N) => {
+        const array = []
+        for (let i=0; i <N; i++) {
+            const row = [];
+            for (let j=0; j <N; j++) {
+                row.push(0);
+            }
+            array.push(row);
         }
-        board.push(row);
+        return array
     }
+
+    const [board, setBoard] = useState(    clearBoard(n));
 
     // initialize variables
     const queens = []
@@ -25,7 +31,6 @@ export default function NQueens() {
         queens.push(i);
     }
 
-    let useOptimizationOne = true;
 
     // target rows with least amount of variables left
     const optimizationOne = (variables) => {
@@ -109,45 +114,25 @@ export default function NQueens() {
         return solved;
     }
 
-    for (let i=0; i<n; i++) {
-        for (let j=0; j< n; j++) {
-            if (board[i][j] === -1) {
-                board[i][j] = 1;
-            } else {
-                board[i][j] = 0;
-            }
-        }
-    }
-
     // Initialize board rendering
-    const boardData = [];
-
-    let arr1 = []
-    for (let i=0; i<n; i++) {
-        arr1.push(i%2);
-    }
-    boardData.push(arr1);
-
-    while (boardData.length < n) {
-        const temp = boardData[boardData.length - 1].map(data => (data + 1)%2);
-        boardData.push(temp);
-    }
 
     // Board component
     const yellow = '#ffaf00';
     const brown = '#5f4203';
-    let boardComponent = boardData.map(
+    let boardComponent = board.map(
         (row, rowIndex) => {
             return <div>
                 {
                     row.map((cell, cellIndex) => {
                         let tileSize = `${400/n}px`
-                        if (cell === 1) {
+                        const img = <img src='/assets/queen.png' />
+                        if ( (rowIndex + cellIndex) %2 === 0) {
                             return <span
                                 className='tile'
                                 style={{backgroundColor: yellow, height: tileSize, width: tileSize}}
                                 key={`cell: ${rowIndex.toString() + cellIndex.toString()}`}>
                                 &nbsp;
+                                { cell === -1 ? img : ''}
                             </span>
                         } else {
                             return <span
@@ -155,6 +140,7 @@ export default function NQueens() {
                                 style={{backgroundColor: brown, height: tileSize, width: tileSize}}
                                 key={`cell: ${rowIndex + cellIndex + ''}`}>
                                 &nbsp;
+                                { cell === -1 ? img : ''}
                             </span>
                         }
                     })
@@ -165,6 +151,7 @@ export default function NQueens() {
 
     // change N
     const onChange = (e) => {
+        setBoard(clearBoard(e.target.value));
         setN(e.target.value);
     }
 
