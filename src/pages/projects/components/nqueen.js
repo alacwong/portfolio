@@ -4,15 +4,15 @@ import '../styling/queen.scss'
 import ReactBootstrapSlider from "react-bootstrap-slider/dist/react-bootstrap-slider";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-slider/dist/css/bootstrap-slider.css"
+import {NQueenSolver} from '../scripts/queen-script'
 
 export default function NQueens() {
 
     const [n, setN] = useState(4);
     const [recursiveCalls, setRecursiveCalls] = useState(0);
-    let useOptimizationOne = useState(true);
 
     // initialize board
-    const clearBoard = ( N) => {
+    const clearBoard = (N) => {
         const array = []
         for (let i=0; i <N; i++) {
             const row = [];
@@ -25,99 +25,6 @@ export default function NQueens() {
     }
 
     const [board, setBoard] = useState(    clearBoard(n));
-
-    // initialize variables
-    const queens = []
-    for (let i=0; i<n; i++) {
-        queens.push(i);
-    }
-
-
-    // target rows with least amount of variables left
-    const optimizationOne = (variables) => {
-        let minRow = 0;
-        let minRowValue = n + 1;
-        for (let i=0; i < variables.length; i++) {
-            const rowValue = board[variables[i]].reduce((acc, curr) => {
-                if (curr === 0) {
-                    acc ++;
-                }
-                return acc;
-            }, 0);
-            if (rowValue < minRowValue) {
-                minRowValue = rowValue;
-                minRow = variables[i];
-            }
-        }
-        return minRow;
-    }
-
-    const validSquare = (i, j) => {
-        return 0 <= i && i < n && 0 <= j && j < n;
-    }
-
-    const place = (left, right, val) => {
-        // row
-        for (let j=0; j <n; j++) {
-            if (j !== right) {
-                board[left][j] += val;
-            }
-        }
-
-        // column
-        for (let j=0; j <n; j++) {
-            if (j !== left) {
-                board[j][right] += val;
-            }
-        }
-
-        // Diagonals
-        const directions = [[1,1], [1, -1], [-1, 1], [-1, -1]];
-        for (let j=0; j< directions.length; j++) {
-            let [x, y] = [left + directions[j][0], right + directions[j][1]];
-            while (validSquare(x, y)) {
-                board[x][y] += val;
-                [x, y] = [x + directions[j][0], y + directions[j][1]];
-            }
-        }
-    }
-
-    const backtrack = (variables) => {
-        console.log('running?');
-        setRecursiveCalls(recursiveCalls + 1);
-        if (variables.length === 0){
-            return true;
-        }
-
-        let queen;
-        if (useOptimizationOne) {
-            queen = optimizationOne(variables);
-            variables.splice(variables.indexOf(queen), 1);
-        } else {
-            queen = variables.shift();
-        }
-
-        let solved = false;
-        for (let i=0; i < n; i++) {
-            if (board[queen][i] === 0) {
-                board[queen][i] = -1;
-                place(queen, i,1);
-                console.log('setting');
-                setBoard(copy(board));
-                solved = backtrack([...variables]);
-                if (!solved) {
-                    // reverse effects
-                    place(queen, i,-1);
-                    board[queen][i] = 0;
-                } else {
-                    return solved
-                }
-            }
-        }
-        return solved;
-    }
-
-    // Initialize board rendering
 
     // Board component
     const yellow = '#ffaf00';
@@ -158,26 +65,16 @@ export default function NQueens() {
         setN(e.target.value);
     }
 
-    const copy = (array) => {
-        const temp = []
-        for (let i=0; i < n; i++) {
-            temp.push([...array[i]]);
-        }
-        return temp;
-    }
-
     let algorithm = 'backtrack';
 
     const run = () => {
         if (algorithm === 'backtrack') {
-            console.log('backtracking');
             const variables = []
             for (let i=0; i< n; i++) {
                 variables.push(i);
             }
-            clearBoard(n);
-            backtrack(variables);
-            console.log('done');
+           const solver = new NQueenSolver(n, 'backtrack');
+           solver.solve(variables, clearBoard(n));
         }
     }
 
