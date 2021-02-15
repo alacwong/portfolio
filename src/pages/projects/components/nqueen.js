@@ -42,10 +42,6 @@ export default function NQueens() {
         recursiveCalls: 0
     });
 
-    const fun = () => {
-        console.log('something');
-    }
-
     // Render Board
     const yellow = '#ffaf00';
     const brown = '#5f4203';
@@ -162,16 +158,17 @@ export default function NQueens() {
                                     marginTop: '10px',
                                     '&:focus': {
                                         outline: 0
-                                    }
+                                    },
+                                    padding: '2% 12%',
                                 }}
 
                             >
-                                Dropdown Button
+                                Run
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={runWrapper.backtracking}>Backtracking</Dropdown.Item>
-                                <Dropdown.Item  onClick={runWrapper.optimization}>Backtracking with optimization</Dropdown.Item>
+                                <Dropdown.Item  onClick={runWrapper.optimization}>Optimized Backtracking</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
