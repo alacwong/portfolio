@@ -8,13 +8,11 @@ import {NQueenSolver} from '../scripts/queen-script'
 
 export default function NQueens() {
 
-    const [n, setN] = useState(4);
-    const [recursiveCalls, setRecursiveCalls] = useState(0);
-    let animationIndex = 0;
-    let animationStack = [];
+    const [n, setN] = useState(8);
+
     // change N
     const onChange = (e) => {
-        setBoard(clearBoard(e.target.value));
+        setState({board: clearBoard(e.target.value), recursiveCalls: 0});
         setN(e.target.value);
     }
 
@@ -24,42 +22,38 @@ export default function NQueens() {
         for (let i=0; i <N; i++) {
             const row = [];
             for (let j=0; j <N; j++) {
-                row.push(-1);
+                row.push(0);
             }
             array.push(row);
         }
         return array
     }
 
-    const [board, setBoard] = useState(    clearBoard(n));
+    const [state, setState] = useState({
+        board: clearBoard(n),
+        recursiveCalls: 0
+    })
 
     // Render Board
     const yellow = '#ffaf00';
     const brown = '#5f4203';
-    let boardComponent = board.map(
+    let boardComponent = state.board.map(
         (row, rowIndex) => {
             return <div key={`Row: ${rowIndex}`}>
                 {
                     row.map((cell, cellIndex) => {
                         let tileSize = `${400/n}px`
                         const img = <img src='/assets/queen.png' />
-                        if ( (rowIndex + cellIndex) %2 === 0) {
                             return <span
                                 className='tile'
-                                style={{backgroundColor: yellow, height: tileSize, width: tileSize}}
+                                style={{
+                                    backgroundColor: ((rowIndex + cellIndex) % 2 === 0) ? yellow: brown,
+                                    height: tileSize,
+                                    width: tileSize}}
                                 key={`cell: ${rowIndex.toString() + cellIndex.toString()}`}>
                                 &nbsp;
                                 { cell === -1 ? img : ''}
                             </span>
-                        } else {
-                            return <span
-                                className='tile'
-                                style={{backgroundColor: brown, height: tileSize, width: tileSize}}
-                                key={`cell: ${rowIndex + cellIndex + ''}`}>
-                                &nbsp;
-                                { cell === -1 ? img : ''}
-                            </span>
-                        }
                     })
                 }
             </div>
@@ -72,20 +66,18 @@ export default function NQueens() {
             variables.push(i);
         }
         const solver = new NQueenSolver(n, 'optimization');
-        animationStack = solver.solve(variables, clearBoard(n));
-        animationIndex = 0;
-        setBoard(animationStack[animationIndex])
+        const animationStack = solver.solve(variables, clearBoard(n));
+        let index = 0;
+        const timer = setInterval( () => {
+            if (index < animationStack.length) {
+                setState({board: animationStack[index], recursiveCalls: index});
+                index++;
+            } else {
+                clearInterval(timer);
+            }
+        }, 100);
     }
 
-
-
-    // useEffect( () => {
-    //     if (animationIndex < animationStack.length) {
-    //         animationIndex ++;
-    //         setBoard(animationStack[animationIndex]);
-    //         console.log('effect');
-    //     }
-    // })
 
     return (
         <FadeIn>
@@ -109,7 +101,7 @@ export default function NQueens() {
                     <div className='board'>
                         { boardComponent}
                     </div>
-                    <p>Recursive Calls: {recursiveCalls}</p>
+                    <p>Recursive Calls: { state.recursiveCalls}</p>
                     <div className='controls'>
                         <p>N: </p>
                         <ReactBootstrapSlider
