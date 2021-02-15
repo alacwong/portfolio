@@ -9,6 +9,7 @@ import {NQueenSolver} from '../scripts/queen-script'
 export default function NQueens() {
 
     const [n, setN] = useState(8);
+    const [disableSlider, setDisableSlider] = useState('');
 
     // change N
     const onChange = (e) => {
@@ -66,6 +67,7 @@ export default function NQueens() {
             variables.push(i);
         }
         const solver = new NQueenSolver(n, 'optimization');
+        setDisableSlider('disabled');
         const animationStack = solver.solve(variables, clearBoard(n));
         let index = 0;
         const timer = setInterval( () => {
@@ -74,10 +76,10 @@ export default function NQueens() {
                 index++;
             } else {
                 clearInterval(timer);
+                setDisableSlider('');
             }
         }, 100);
     }
-
 
     return (
         <FadeIn>
@@ -101,7 +103,7 @@ export default function NQueens() {
                     <div className='board'>
                         { boardComponent}
                     </div>
-                    <p>Recursive Calls: { state.recursiveCalls}</p>
+                    <p>Recursive Calls: {state.recursiveCalls}</p>
                     <div className='controls'>
                         <p>N: </p>
                         <ReactBootstrapSlider
@@ -112,6 +114,7 @@ export default function NQueens() {
                             step={1}
                             max={16}
                             min={4}
+                            disabled={disableSlider}
                         />
                     </div>
                     <button onClick={run}>Backtrack</button>
