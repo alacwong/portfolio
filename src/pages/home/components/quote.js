@@ -22,13 +22,11 @@ export default class Quote extends Component{
     }
 
     componentDidMount() {
-        let i = 0;
         setInterval(() => {
             const newIndex = (this.state.index + 1) % this.state.quotes.length;
             this.setState({index: newIndex, animate: true});
         }, 6000);
     }
-
 
     render(){
         // Shuffle array
@@ -41,7 +39,6 @@ export default class Quote extends Component{
         }
 
         const exitAnimation = () => {
-            console.log(this.state);
             this.setState({ animate: false});
         }
 
