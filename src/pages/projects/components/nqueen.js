@@ -5,16 +5,23 @@ import ReactBootstrapSlider from "react-bootstrap-slider/dist/react-bootstrap-sl
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-slider/dist/css/bootstrap-slider.css"
 import {NQueenSolver} from '../scripts/queen-script'
+import {Dropdown} from "react-bootstrap";
 
 export default function NQueens() {
 
     const [n, setN] = useState(8);
     const [disableSlider, setDisableSlider] = useState('');
+    const [delay, setDelay] = useState(250);
+    const [algorithm, setAlgorithm] = useState('backtracking');
 
     // change N
     const onChange = (e) => {
         setState({board: clearBoard(e.target.value), recursiveCalls: 0});
         setN(e.target.value);
+    }
+
+    const onDelayChange = (e) => {
+        setDelay(e.target.value);
     }
 
     // initialize empty board
@@ -33,18 +40,23 @@ export default function NQueens() {
     const [state, setState] = useState({
         board: clearBoard(n),
         recursiveCalls: 0
-    })
+    });
+
+    const fun = () => {
+        console.log('something');
+    }
 
     // Render Board
     const yellow = '#ffaf00';
     const brown = '#5f4203';
     let boardComponent = state.board.map(
         (row, rowIndex) => {
-            return <div key={`Row: ${rowIndex}`}>
-                {
-                    row.map((cell, cellIndex) => {
-                        let tileSize = `${400/n}px`
-                        const img = <img src='/assets/queen.png' />
+            return (
+                <div key={`Row: ${rowIndex}`}>
+                    {
+                        row.map((cell, cellIndex) => {
+                            let tileSize = `${400/n}px`
+                            const img = <img src='/assets/queen.png' />
                             return <span
                                 className='tile'
                                 style={{
@@ -55,18 +67,29 @@ export default function NQueens() {
                                 &nbsp;
                                 { cell === -1 ? img : ''}
                             </span>
-                    })
-                }
-            </div>
+                        })
+                    }
+                </div>
+            )
         }
     )
 
-    const run = () => {
+    const runWrapper = {
+        backtracking: () => {
+            run('backtracking');
+        },
+
+        optimization: () => {
+            run('optimization')
+        }
+    }
+
+    const run = (algorithm) => {
         const variables = []
         for (let i=0; i< n; i++) {
             variables.push(i);
         }
-        const solver = new NQueenSolver(n, 'optimization');
+        const solver = new NQueenSolver(n, algorithm);
         setDisableSlider('disabled');
         const animationStack = solver.solve(variables, clearBoard(n));
         let index = 0;
@@ -78,7 +101,7 @@ export default function NQueens() {
                 clearInterval(timer);
                 setDisableSlider('');
             }
-        }, 100);
+        }, delay);
     }
 
     return (
@@ -96,7 +119,7 @@ export default function NQueens() {
                     <ul>
                         <li>Recursive Backtracking</li>
                         <li>Optimized Recursive Backtracking</li>
-                        <li>Random Permutations</li>
+                        <li>Random Permutations (coming soon)</li>
                     </ul>
                 </div>
                 <div className='chess'>
@@ -105,19 +128,53 @@ export default function NQueens() {
                     </div>
                     <p>Recursive Calls: {state.recursiveCalls}</p>
                     <div className='controls'>
-                        <p>N: </p>
-                        <ReactBootstrapSlider
-                            className='slider'
-                            change={onChange}
-                            orientation="horizontal"
-                            value={n}
-                            step={1}
-                            max={16}
-                            min={4}
-                            disabled={disableSlider}
-                        />
+                        <p>Board Size: </p>
+                        <span className='slider'>
+                            <ReactBootstrapSlider
+                                change={onChange}
+                                orientation="horizontal"
+                                value={n}
+                                step={1}
+                                max={16}
+                                min={4}
+                                disabled={disableSlider}
+                            />
+                        </span>
+                        <p>Animation Speed: </p>
+                        <span className='slider'>
+                            <ReactBootstrapSlider
+                                change={onDelayChange}
+                                orientation="horizontal"
+                                value={delay}
+                                step={1}
+                                max={500}
+                                min={1}
+                                disabled={disableSlider}
+                            />
+                        </span>
                     </div>
-                    <button onClick={run}>Backtrack</button>
+                    <div>
+                        <Dropdown>
+                            <Dropdown.Toggle
+                                id="dropdown-basic"
+                                style={{
+                                    backgroundColor: yellow,
+                                    marginTop: '10px',
+                                    '&:focus': {
+                                        outline: 0
+                                    }
+                                }}
+
+                            >
+                                Dropdown Button
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={runWrapper.backtracking}>Backtracking</Dropdown.Item>
+                                <Dropdown.Item  onClick={runWrapper.optimization}>Backtracking with optimization</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
                 </div>
             </div>
         </FadeIn>

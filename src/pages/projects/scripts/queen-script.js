@@ -2,11 +2,7 @@ export class NQueenSolver{
 
     constructor(n, algorithm) {
         this.n = n;
-        if (algorithm === 'optimization') {
-            this.useOptimizationOne = true;
-        } else {
-            this.useOptimizationOne = false;
-        }
+        this.algorithm = algorithm;
     }
 
     optimizationOne(variables, chessBoard) {
@@ -92,7 +88,12 @@ export class NQueenSolver{
 
     solve(variables, board) {
         this.stateStack = [];
-        this.backtrack(variables, board);
+        if (this.algorithm === 'optimization') {
+            this.useOptimizationOne = true;
+            this.backtrack(variables, board);
+        } else if (this.algorithm === 'backtracking') {
+            this.backtrack(variables, board);
+        }
         return this.stateStack;
     }
 
