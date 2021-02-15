@@ -1,43 +1,63 @@
 import React, {Component, useEffect, useState} from "react";
-import TransitionGroup from "react-transition-group/TransitionGroup";
 import CSSTransition from "react-transition-group/CSSTransition";
 import '../css/home.scss'
+import {Transition} from "react-transition-group";
 
-export default function Quote() {
 
+export default class Quote extends Component{
 
-    const quotes = [
-        '"Some inspirational quote"',
-        '"Another inspirational quote"',
-        '"Yet another inspirational quote"',
-        '"And one"'
-    ]
-    const [index, setIndex] = useState(0);
+    constructor(props) {
+        super(props);
 
-    // Shuffle array
-    for (let i = quotes.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = quotes[i];
-        quotes[i] = quotes[j];
-        quotes[j] = temp;
+        this.state = {
+            quotes: [
+                '"Some inspirational quote"',
+                '"Another inspirational quote"',
+                '"Yet another inspirational quote"',
+                '"And one"'
+            ],
+            index: 0,
+            animate: false
+        }
     }
 
-    // Change quote
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setIndex((index + 1)% quotes.length);
-            clearInterval(timer);
-        }, 10000);
-    })
+    componentDidMount() {
+        let i = 0;
+        setInterval(() => {
+            const newIndex = (this.state.index + 1) % this.state.quotes.length;
+            this.setState({index: newIndex, animate: true});
+        }, 6000);
+    }
 
-    return (
-        <TransitionGroup>
-            <CSSTransition
-                classNames="fade"
-                timeout={{ enter: 500, exit: 300 }}
-            >
-                <h1 className='quote'>{quotes[index]}</h1>
-            </CSSTransition>
-        </TransitionGroup>
-    )
+
+    render(){
+        // Shuffle array
+        const quotes = [ this.state.quotes]
+        for (let i = quotes.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = quotes[i];
+            quotes[i] = quotes[j];
+            quotes[j] = temp;
+        }
+
+        const exitAnimation = () => {
+            console.log(this.state);
+            this.setState({ animate: false});
+        }
+
+        return (
+            <div>
+                <Transition>
+                    <CSSTransition
+                        classNames="fade"
+                        in={this.state.animate}
+                        timeout={{ enter: 1000, exit: 500 }}
+                        onEntered={exitAnimation}
+                    >
+                        <h1 className='quote'>{this.state.quotes[this.state.index]}</h1>
+                    </CSSTransition>
+                </Transition>
+            </div>
+        )
+    }
 }

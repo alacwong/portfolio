@@ -12,7 +12,6 @@ export default function NQueens() {
     const [n, setN] = useState(8);
     const [disableSlider, setDisableSlider] = useState('');
     const [delay, setDelay] = useState(250);
-    const [algorithm, setAlgorithm] = useState('backtracking');
 
     // change N
     const onChange = (e) => {
