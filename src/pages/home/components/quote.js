@@ -48,7 +48,7 @@ export default class Quote extends Component{
                     <CSSTransition
                         classNames="fade"
                         in={this.state.animate}
-                        timeout={{ enter: 1000, exit: 500 }}
+                        timeout={{ enter: 2000, exit: 1000 }}
                         onEntered={exitAnimation}
                     >
                         <h1 className='quote'>{this.state.quotes[this.state.index]}</h1>
