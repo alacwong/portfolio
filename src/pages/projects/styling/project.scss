@@ -18,7 +18,8 @@
 
     ul {
       li {
-        color: white;
+        color: #ffffff;
+        padding-right: 10px;
       }
     }
   }
@@ -43,22 +44,42 @@
         }
       }
     }
-
     p {
       color: white;
       margin-bottom: 0;
       margin-top: 2%;
     }
+  }
 
-    .controls {
-      p {
-        display: inline-block;
-        margin-right: 0;
-      }
-      .slider {
-        margin-top: 5px;
-        float: right;
-      }
+  .api {
+    width: 400px;
+  }
+
+  .controls {
+    margin-top: 5px;
+    p {
+      display: inline-block;
+      margin-right: 0;
+      color: white;
+    }
+    .slider {
+      margin-top: 5px;
+      float: right;
+    }
+  }
+
+  button {
+    background-color: #ffaf00;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: #b57e00;
     }
   }
 }

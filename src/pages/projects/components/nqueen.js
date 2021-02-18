@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import FadeIn from "react-fade-in";
-import '../styling/queen.scss'
+import '../styling/project.scss'
 import ReactBootstrapSlider from "react-bootstrap-slider/dist/react-bootstrap-slider";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-slider/dist/css/bootstrap-slider.css"

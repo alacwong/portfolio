@@ -17,6 +17,7 @@
     "react-bootstrap-slider": "^3.0.0",
     "react-dom": "^16.14.0",
     "react-fade-in": "^2.0.1",
+    "react-json-pretty": "^2.2.0",
     "react-particles-js": "^2.7.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
