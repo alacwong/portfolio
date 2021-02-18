@@ -14,11 +14,11 @@ code {
 .background {
   z-index: -1;
   top: 0;
-  height: 100%!important;
+  height: 100%;
   overflow: auto;
   width: 100%;
-  position: absolute!important;
-  background: linear-gradient(#ab5600, #ffa5a5);
+  position: fixed!important;
+  background: linear-gradient(#ab5600, #ffdba5);
 }
 
 .nav {
