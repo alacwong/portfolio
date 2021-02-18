@@ -7,16 +7,12 @@ export default function MvpClassifier() {
 
     const [k, setK] = useState(1);
 
-    const test = {
+    let url = `http://localhost:5000?k=${k}`;
+
+    const [data, setData] = useState({
         'Try out': 'This API',
         'Best Scorer': 'James Harden',
-    }
-
-    const url = 'http://localhost:5000';
-
-    const data = {
-
-    }
+    });
 
     const theme = {
         main: 'border: 1px solid gray;border-radius:10px;padding:10px;line-height:1.3;' +
@@ -29,7 +25,11 @@ export default function MvpClassifier() {
     }
 
     const getData = () => {
-
+        fetch(url).then(res => res.json()).then(
+            data => {
+                setData(data);
+            }
+        )
     }
 
     const updateK = (e) => {
@@ -51,8 +51,8 @@ export default function MvpClassifier() {
                 </ul>
             </div>
             <div className='api'>
-                <JSONPretty theme={theme} data={test}/>
-                <button>Try out the api!</button>
+                <JSONPretty theme={theme} data={data}/>
+                <button onClick={getData}>Try out the api!</button>
                 <div className='controls'>
                     <p>K players: </p>
                     <span className='slider'>
