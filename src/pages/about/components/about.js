@@ -38,6 +38,7 @@ export default function About () {
                     <li>Digitized menus into a Angular Web application with QR-code</li>
                     <li>Developed Secure Covid 19 contact tracing api in Flask</li>
                     <li>Developed Menu Editor platform for restaurant clients to use</li>
+                    <li>Developed sign</li>
                 </ul>
 
             </div>
