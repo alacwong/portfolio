@@ -29,6 +29,9 @@ function App() {
                       },
                       "size": {
                           "value": 3
+                      },
+                      line_linked: {
+                          color: "#00aeff",
                       }
                   },
                   "interactivity": {

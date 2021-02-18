@@ -1,0 +1,31 @@
+.flex-container {
+  display: flex;
+  margin: 10% 5%;
+  flex-direction: row;
+
+
+  .container {
+    width: 35%;
+    margin: 0 5%;
+
+    h1 {
+      color: #ffaf00;
+    }
+
+    p {
+      color: white;
+      font-size: 16px;
+    }
+
+    h2 {
+      color: #ffaf00;
+    }
+  }
+
+  img {
+    justify-content: flex-end;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+  }
+}
