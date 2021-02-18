@@ -2,6 +2,7 @@ import './App.css';
 import React from "react";
 import Home from "./pages/home/components/home";
 import Projects from "./pages/projects/components/projects";
+import About from "./pages/about/components/about";
 import Particles from "react-particles-js";
 import {
     BrowserRouter as Router,
@@ -10,12 +11,14 @@ import {
 import NavBar from "./components/navbar/navbar";
 
 function App() {
+
   return (
       <div>
           <NavBar/>
           <Router>
               <Route  exact path="/" component={Home}/>
               <Route path="/projects" component={Projects}/>
+              <Route path="/about" component={About}/>
           </Router>
           <Particles
               className="background"
