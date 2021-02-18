@@ -1,7 +1,6 @@
 import React, {Component, useEffect, useState} from "react";
 import CSSTransition from "react-transition-group/CSSTransition";
 import '../css/home.scss'
-import {Transition} from "react-transition-group";
 
 
 export default class Quote extends Component{

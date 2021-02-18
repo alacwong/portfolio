@@ -31,7 +31,7 @@ function App() {
                           "value": 3
                       },
                       line_linked: {
-                          color: "#00aeff",
+                          color: "#000405",
                       }
                   },
                   "interactivity": {

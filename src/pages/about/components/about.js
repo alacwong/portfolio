@@ -18,6 +18,29 @@ export default function About () {
                 </div>
                 <img src='assets/ball.jpg'/>
             </div>
+
+            <div className='exp'>
+                <h1> Work experience</h1>
+
+                <h2>PickEasy Software Developer (Part-time)</h2>
+
+                <ul>
+                    <li>Developed OCR technology to convert menu images to our digital menu format using
+                    google cloud vision and Open Cv</li>
+                    <li>Engineered restaurant recommendation model to recommend restaurants based on
+                    user's swipe history and restaurant content trained on indexed restaurants from Yelp Api</li>
+                    <li> Mentored current co-op students by troubleshooting issues and providing feedback</li>
+                </ul>
+
+                <h2>PickEasy Software Developer(Co-op)</h2>
+
+                <ul>
+                    <li>Digitized menus into a Angular Web application with QR-code</li>
+                    <li>Developed Secure Covid 19 contact tracing api in Flask</li>
+                    <li>Developed Menu Editor platform for restaurant clients to use</li>
+                </ul>
+
+            </div>
         </FadeIn>
     )
 }

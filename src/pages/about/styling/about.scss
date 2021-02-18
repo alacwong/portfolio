@@ -1,12 +1,13 @@
 .flex-container {
-  display: flex;
   margin: 10% 5%;
-  flex-direction: row;
-
+  background-color: black;
+  border-radius: 10px;
+  padding: 20px;
 
   .container {
     width: 35%;
     margin: 0 5%;
+    display: inline-block;
 
     h1 {
       color: #ffaf00;
@@ -23,9 +24,33 @@
   }
 
   img {
-    justify-content: flex-end;
+    float: right;
     height: 300px;
     width: 300px;
     border-radius: 50%;
+    margin-right: 5%;
+  }
+}
+
+.exp {
+  background-color: black;
+  padding: 20px;
+  border-radius: 10px;
+
+  margin: 0 5%;
+  h1 {
+    color: white;
+  }
+
+  h2 {
+    margin: 20px 0 10px 0;
+    color: #ffaf00;
+    font-size: 24px;
+  }
+
+  ul {
+    li {
+      color: white;
+    }
   }
 }
