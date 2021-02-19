@@ -44,13 +44,13 @@ function generateMaze(n) {
         // ? add edge
         if (newGraph[v]) {
             // accept edge by probability
-            if (Math.random() < 0.25) {
-                if (newGraph[u] !== undefined) {
-                    newGraph[u].push(v);
-                } else {
-                    newGraph[u] = [v];
-                }
-            }
+            // if (Math.random() < 0.5) {
+            //     if (newGraph[u] !== undefined) {
+            //         newGraph[u].push(v);
+            //     } else {
+            //         newGraph[u] = [v];
+            //     }
+            // }
         } else {
             if (newGraph[u] !== undefined) {
                 newGraph[u].push(v);
@@ -64,8 +64,7 @@ function generateMaze(n) {
         }
     }
 
-    console.log(newGraph);
-    return new Graph(newGraph, n);
+    return new Graph(newGraph, n, graphData);
 }
 
 function validSquares(n, coords) {
@@ -99,14 +98,36 @@ function getCoords(n, index) {
 
 class Graph {
 
-    constructor(graph, n) {
+    constructor(graph, n, fullGraph) {
         this.n = n;
         this.graph = graph;
+        this.fullGraph = fullGraph
     }
 
     get(coords) {
         const index = getIndex(this.n, coords)
         return this.graph[index].map(node => getCoords(this.n, node));
+    }
+
+    getWalls(coords) {
+        const styleMap = {
+            '0,1': 'borderTop',
+            '-1,0': 'borderLeft',
+            '1,0': 'borderRight',
+            '0,-1': 'borderBottom'
+        };
+
+        const fullSet = new Set(this.fullGraph[getIndex(this.n, coords)].map(node => node[0]));
+        const gSet = new Set(this.graph[getIndex(this.n, coords)]);
+        return [...fullSet].filter(node => !gSet.has(node)).map(node => {
+            const [x, y] = getCoords(this.n, node);
+            const [i, j] = coords;
+            return styleMap[[x -i, y - j].toString()]
+        }).reduce( (acc, curr) => {
+                acc[curr] = '2px solid black'
+                return acc;
+            }, {}
+        );
     }
 
 }

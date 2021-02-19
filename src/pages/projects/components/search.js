@@ -6,20 +6,46 @@ export default class Search extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            graph: generateMaze(32)
+        }
     }
 
     componentDidMount() {
-        let g = generateMaze(32);
-        console.log(g.get([0, 0]));
+
     }
 
 
     render() {
 
+        const n = 32
+        const board = []
+        for (let i=0; i < n; i++) {
+            let row = [];
+            for (let j=0; j <n; j++) {
+                const style = this.state.graph.getWalls([i, j]);
+                row.push(
+                    <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; </span>
+                );
+            }
+            board.push(
+                <div key={`row: ${i}`} className='board-row'>
+                    {row}
+                </div>
+            )
+        }
+
+        console.log(board.length);
+
         return (
             <FadeIn>
-                <div>
-                    Search
+                <div className='project'>
+                    <div className='search-description'>
+                        <h1>Search</h1>
+                    </div>
+                    <div className='search-board'>
+                        { board}
+                    </div>
                 </div>
             </FadeIn>
         )

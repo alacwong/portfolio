@@ -85,4 +85,28 @@
       background-color: #b57e00;
     }
   }
+
+
+  .search-description {
+    width: calc(100% - 630px);
+    h1 {
+      color: #ffaf00;
+    }
+  }
+
+  .search-board {
+    width: 640px;
+    background-color: white;
+
+    .board-row {
+      width: 640px;
+      height: 20px;
+      .board-tile {
+        width: 20px;
+        height:20px;
+        display: inline-block;
+        position: relative;
+      }
+    }
+  }
 }
