@@ -16,15 +16,17 @@ function generateMaze(n) {
         }
     }
 
+    // console.log(graphData);
+
     const newGraph = {};
     let graphSize = 0;
 
     // Initialize with 0 node's neighbors
     // shape: [u, v, <u,v> weight]
-    const q = [[...graphData[0]].map(node => [0, ...node])];
+    let q = [...[...graphData[0]].map(node => [0, ...node])];
 
     //
-    while (graphSize < n - 1) {
+    while (graphSize < n*n - 1) {
 
         // get minimum edge
         let [minEdge, minIndex] = q.reduce( (acc, curr, index) => {
@@ -34,23 +36,36 @@ function generateMaze(n) {
             } else {
                 return acc
             }
-        });
+        }, [q[0], 0]);
 
         q.splice(minIndex, 1);
-        const [u, v] = minEdge;
+        const [u, v,] = minEdge;
 
         // ? add edge
         if (newGraph[v]) {
             // accept edge by probability
             if (Math.random() < 0.25) {
-                newGraph[u].push(v);
+                if (newGraph[u] !== undefined) {
+                    newGraph[u].push(v);
+                } else {
+                    newGraph[u] = [v];
+                }
             }
         } else {
-            newGraph[u].push(v);
+            if (newGraph[u] !== undefined) {
+                newGraph[u].push(v);
+            } else {
+                newGraph[u] = [v];
+            }
             graphSize += 1;
-            q.concat([...graphData[v].map( node => [v, ...node])]);
+
+            // add all edges u-v st u v not in G
+            q.push(...graphData[v].filter(node => newGraph[node] === undefined).map(node => [v, ...node]))
         }
     }
+
+    console.log(newGraph);
+    return new Graph(newGraph, n);
 }
 
 function validSquares(n, coords) {
@@ -84,4 +99,16 @@ function getCoords(n, index) {
 
 class Graph {
 
+    constructor(graph, n) {
+        this.n = n;
+        this.graph = graph;
+    }
+
+    get(coords) {
+        const index = getIndex(this.n, coords)
+        return this.graph[index].map(node => getCoords(this.n, node));
+    }
+
 }
+
+export {generateMaze}
