@@ -42,8 +42,8 @@ function generateMaze(n) {
         const [u, v,] = minEdge;
 
         // ? add edge
-        if (newGraph[v]) {
-            // accept edge by probability
+        if (newGraph[v] !== undefined) {
+            //accept edge by probability
             // if (Math.random() < 0.5) {
             //     if (newGraph[u] !== undefined) {
             //         newGraph[u].push(v);
@@ -52,19 +52,26 @@ function generateMaze(n) {
             //     }
             // }
         } else {
-            if (newGraph[u] !== undefined) {
-                newGraph[u].push(v);
-            } else {
-                newGraph[u] = [v];
-            }
+            addEdge(u,v, newGraph);
+            addEdge(v, u, newGraph);
             graphSize += 1;
 
             // add all edges u-v st u v not in G
-            q.push(...graphData[v].filter(node => newGraph[node] === undefined).map(node => [v, ...node]))
+            q.push(...graphData[v].filter(node => newGraph[node] === undefined).map(node => [v, ...node]));
         }
     }
 
+    console.log(newGraph);
+
     return new Graph(newGraph, n, graphData);
+}
+
+function addEdge(u, v, graph) {
+    if (graph[u] === undefined) {
+        graph[u] = [v];
+    } else {
+        graph[u].push(v);
+    }
 }
 
 function validSquares(n, coords) {
@@ -111,12 +118,11 @@ class Graph {
 
     getWalls(coords) {
         const styleMap = {
-            '0,1': 'borderTop',
-            '-1,0': 'borderLeft',
-            '1,0': 'borderRight',
-            '0,-1': 'borderBottom'
+            '0,-1': 'borderLeft',
+            '-1,0': 'borderTop',
+            '1,0': 'borderBottom',
+            '0,1': 'borderRight'
         };
-
         const fullSet = new Set(this.fullGraph[getIndex(this.n, coords)].map(node => node[0]));
         const gSet = new Set(this.graph[getIndex(this.n, coords)]);
         return [...fullSet].filter(node => !gSet.has(node)).map(node => {

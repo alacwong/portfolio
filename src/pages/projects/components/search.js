@@ -7,7 +7,7 @@ export default class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            graph: generateMaze(32)
+            graph: generateMaze(16)
         }
     }
 
@@ -18,7 +18,7 @@ export default class Search extends Component {
 
     render() {
 
-        const n = 32
+        const n = 16
         const board = []
         for (let i=0; i < n; i++) {
             let row = [];
@@ -34,8 +34,6 @@ export default class Search extends Component {
                 </div>
             )
         }
-
-        console.log(board.length);
 
         return (
             <FadeIn>
