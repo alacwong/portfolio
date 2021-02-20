@@ -101,11 +101,15 @@
     .board-row {
       width: 640px;
       height: 40px;
+      display: flex;
+      margin: 0 1px 0 0;
       .board-tile {
         width: 40px;
         height:40px;
         display: inline-block;
         position: relative;
+        margin: 0 0 1px;
+
       }
     }
   }

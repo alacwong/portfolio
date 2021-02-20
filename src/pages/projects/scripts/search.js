@@ -16,8 +16,6 @@ function generateMaze(n) {
         }
     }
 
-    // console.log(graphData);
-
     const newGraph = {};
     let graphSize = 0;
 
@@ -25,7 +23,6 @@ function generateMaze(n) {
     // shape: [u, v, <u,v> weight]
     let q = [...[...graphData[0]].map(node => [0, ...node])];
 
-    //
     while (graphSize < n*n - 1) {
 
         // get minimum edge
@@ -44,13 +41,10 @@ function generateMaze(n) {
         // ? add edge
         if (newGraph[v] !== undefined) {
             //accept edge by probability
-            // if (Math.random() < 0.5) {
-            //     if (newGraph[u] !== undefined) {
-            //         newGraph[u].push(v);
-            //     } else {
-            //         newGraph[u] = [v];
-            //     }
-            // }
+            if (Math.random() < 0.05) {
+                addEdge(u,v, newGraph);
+                addEdge(v, u, newGraph);
+            }
         } else {
             addEdge(u,v, newGraph);
             addEdge(v, u, newGraph);
@@ -60,8 +54,6 @@ function generateMaze(n) {
             q.push(...graphData[v].filter(node => newGraph[node] === undefined).map(node => [v, ...node]));
         }
     }
-
-    console.log(newGraph);
 
     return new Graph(newGraph, n, graphData);
 }
@@ -130,7 +122,7 @@ class Graph {
             const [i, j] = coords;
             return styleMap[[x -i, y - j].toString()]
         }).reduce( (acc, curr) => {
-                acc[curr] = '2px solid black'
+                acc[curr] = '1px solid black'
                 return acc;
             }, {}
         );
