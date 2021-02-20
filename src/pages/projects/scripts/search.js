@@ -1,6 +1,9 @@
 // Searching algorithms
 
 
+const Mouse = 1;
+const Cheese = -1;
+
 // Generate maze
 function generateMaze(n) {
 
@@ -43,7 +46,6 @@ function generateMaze(n) {
             if (Math.random() < 0.05) {
                 addEdge(u,v, newGraph);
                 addEdge(v, u, newGraph);
-                console.log('loop');
             }
         } else {
             addEdge(u,v, newGraph);
@@ -127,7 +129,32 @@ class Graph {
             }, {}
         );
     }
-
 }
 
-export {generateMaze}
+function generateBoard(n) {
+    // Generate board with
+    const board = [];
+    for(let i=0; i < n; i++) {
+        const row = []
+        for(let j=0; j < n; j++) {
+            row.push(0);
+        }
+        board.push(row);
+    }
+
+    let [x, y] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)]
+
+    board[x][y] = Mouse;
+
+    const numCheese = Math.ceil(4 + Math.random()* 6);
+
+    for (let i=0; i < numCheese; i++) {
+        [x, y] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)]
+        if (board[x][y] !== Mouse) {
+            board[x][y] = Cheese;
+        }
+    }
+    return board;
+}
+
+export {generateMaze, generateBoard, Mouse, Cheese}

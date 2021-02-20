@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import FadeIn from "react-fade-in";
-import {generateMaze} from "../scripts/search";
+import {generateMaze, generateBoard, Mouse, Cheese} from "../scripts/search";
 
 export default class Search extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            graph: generateMaze(20)
+            graph: generateMaze(20),
+            board: generateBoard(20)
         }
     }
 
@@ -22,8 +23,17 @@ export default class Search extends Component {
             let row = [];
             for (let j=0; j <n; j++) {
                 const style = this.state.graph.getWalls([i, j]);
+
+                let img;
+                if (this.state.board[i][j] === Mouse) {
+                    img = <img src={'assets/mouse.png'}/>
+                } else if (this.state.board[i][j] === Cheese) {
+                    img = <img src={'assets/cheese.jpg'}/>
+                } else {
+                    img = ''
+                }
                 row.push(
-                    <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; </span>
+                    <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; {img} </span>
                 );
             }
             board.push(
