@@ -86,30 +86,45 @@
     }
   }
 
+}
 
-  .search-description {
-    width: calc(100% - 630px);
-    h1 {
-      color: #ffaf00;
-    }
+.search-project {
+  margin: 5% 15%;
+  background-color: black;
+  padding: 20px;
+  border-radius: 10px;
+
+  h1 {
+    text-align: center;
+    color: #ffaf00;
+    margin-bottom: 2%;
   }
 
   .search-board {
+    display: block;
     width: 640px;
-    background-color: white;
-
+    margin: auto;
+    background-color: #fad47b;
     .board-row {
       width: 640px;
-      height: 40px;
+      height: 30px;
       display: flex;
       margin: 0 1px 0 0;
       .board-tile {
-        width: 40px;
-        height:40px;
+        width: 32px;
+        height:32px;
         display: inline-block;
         position: relative;
         margin: 0 0 1px;
+      }
+    }
+  }
 
+  .search-description {
+    ul {
+      margin-top: 3%;
+      li {
+        color: white;
       }
     }
   }

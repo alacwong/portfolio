@@ -7,32 +7,21 @@ export default class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            graph: generateMaze(16)
+            graph: generateMaze(20)
         }
     }
 
     componentDidMount() {
-
     }
-
 
     render() {
 
-        const test = []
-        for (let i=0; i <16; i++) {
-            let row = [];
-            for (let j=0; j<16; j++) {
-                row.push(0);
-            }
-            test.push(row);
-        }
-        const n = 16
+        const n = 20;
         const board = []
         for (let i=0; i < n; i++) {
             let row = [];
             for (let j=0; j <n; j++) {
                 const style = this.state.graph.getWalls([i, j]);
-                test[i][j] = style;
                 row.push(
                     <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; </span>
                 );
@@ -46,12 +35,18 @@ export default class Search extends Component {
 
         return (
             <FadeIn>
-                <div className='project'>
-                    <div className='search-description'>
-                        <h1>Search</h1>
-                    </div>
+                <div className='search-project'>
+                    <h1>Search Visualizations</h1>
                     <div className='search-board'>
                         { board}
+                    </div>
+                    <div className='search-description'>
+                        <ul>
+                            <li> Random maze generation using Prim's algorithm and random loops</li>
+                            <li>Depth first search visualization</li>
+                            <li>Breadth first search visualization</li>
+                            <li>A * star search visualization</li>
+                        </ul>
                     </div>
                 </div>
             </FadeIn>

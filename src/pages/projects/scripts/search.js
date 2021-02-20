@@ -38,12 +38,12 @@ function generateMaze(n) {
         q.splice(minIndex, 1);
         const [u, v,] = minEdge;
 
-        // ? add edge
         if (newGraph[v] !== undefined) {
             //accept edge by probability
             if (Math.random() < 0.05) {
                 addEdge(u,v, newGraph);
                 addEdge(v, u, newGraph);
+                console.log('loop');
             }
         } else {
             addEdge(u,v, newGraph);
