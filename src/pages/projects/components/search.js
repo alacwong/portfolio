@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import FadeIn from "react-fade-in";
-import {generateMaze, generateBoard, Mouse, Cheese} from "../scripts/search";
+import {generateMaze, generateBoard, Mouse, Cheese, PathFinder, Visited} from "../scripts/search";
 
 export default class Search extends Component {
 
@@ -10,6 +10,8 @@ export default class Search extends Component {
             graph: generateMaze(20),
             board: generateBoard(20)
         }
+
+        this.setState({board: new PathFinder().dfs(this.state.board, this.state.graph)});
     }
 
     componentDidMount() {
@@ -25,10 +27,12 @@ export default class Search extends Component {
                 const style = this.state.graph.getWalls([i, j]);
 
                 let img;
-                if (this.state.board[i][j] === Mouse) {
+                if (this.state.board[i][j] % Mouse === 0) {
                     img = <img src={'assets/mouse.png'}/>
-                } else if (this.state.board[i][j] === Cheese) {
+                } else if (this.state.board[i][j] % Cheese === 0) {
                     img = <img src={'assets/cheese.jpg'}/>
+                }else if (this.state.board[i][j] % Visited === 0){
+                    img = <img src={'assets/path.jpg'}/>
                 } else {
                     img = ''
                 }

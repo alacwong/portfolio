@@ -1,8 +1,10 @@
 // Searching algorithms
 
 
-const Mouse = 1;
-const Cheese = -1;
+const Mouse = 2;
+const Cheese = 3;
+const Visited  = 5;
+const Path = 7;
 
 // Generate maze
 function generateMaze(n) {
@@ -56,7 +58,6 @@ function generateMaze(n) {
             q.push(...graphData[v].filter(node => newGraph[node] === undefined).map(node => [v, ...node]));
         }
     }
-
     return new Graph(newGraph, n, graphData);
 }
 
@@ -137,7 +138,7 @@ function generateBoard(n) {
     for(let i=0; i < n; i++) {
         const row = []
         for(let j=0; j < n; j++) {
-            row.push(0);
+            row.push(1);
         }
         board.push(row);
     }
@@ -150,11 +151,129 @@ function generateBoard(n) {
 
     for (let i=0; i < numCheese; i++) {
         [x, y] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)]
-        if (board[x][y] !== Mouse) {
-            board[x][y] = Cheese;
+        if (board[x][y]% Mouse !== 0) {
+            board[x][y] *= Cheese;
         }
     }
     return board;
 }
 
-export {generateMaze, generateBoard, Mouse, Cheese}
+function DFS(board, graph) {
+    // Run Depth First Search
+    let cheeses = numCheese(board);
+
+    const dfsHelper = (mouse) => {
+        const [i, j] = mouse;
+        board[i][j] *= Visited;
+
+        if (board[i][j] % Cheese === 0) {
+            cheeses --;
+            board[i][j] *= Path;
+            return [i, j];
+        }
+
+        const neighbors = graph.get(mouse);
+        for (const neighbor of neighbors) {
+            let [x, y] = neighbor;
+            if (board[x][y] % Visited !== 0) {
+                const cheese = dfsHelper(neighbor);
+                if (cheese) {
+                    board[x][y] *= Path;
+                    return cheese;
+                }
+            }
+        }
+
+        // backtrack from this path
+        return [];
+    }
+
+    let mouse = getMouse(board)
+    dfsHelper(mouse);
+    //console.log(traversePath(board, mouse, graph, []), 't')
+    return board;
+}
+
+function copyBoard (board) {
+    const temp = []
+
+    for (let i=0; i < board.length; i++) {
+        const row = []
+        for (let j=0; j < board[i].length; j++) {
+            row.push(board[i][j]);
+        }
+        temp.push(row);
+    }
+
+    return temp;
+}
+
+function unVisit(board) {
+    for (let i=0; i < board.length; i++) {
+        for (let j=0; j < board.length; j++) {
+            board[i][j]/=Visited;
+        }
+    }
+}
+
+function numCheese(board) {
+
+    let cheese = 0;
+
+    for (let i=0; i <board.length; i++ ){
+        for (let j=0; j < board.length; j++) {
+            if (board[i][j] % Cheese === 0) {
+                cheese++;
+            }
+        }
+    }
+    return cheese;
+}
+
+function getMouse(board) {
+    for (let i=0; i <board.length; i++ ){
+        for (let j=0; j < board.length; j++) {
+            if (board[i][j] % Mouse === 0) {
+                return [i, j]
+            }
+        }
+    }
+}
+
+class PathFinder {
+    // wrapper class to run different path finding algorithms
+
+    dfs(board, graph){
+        return DFS(board, graph);
+    }
+
+}
+
+function traversePath(board, mouse, graph, frames) {
+
+    const neighbors = graph.get(mouse);
+    const [x, y] = mouse;
+    if (board[x][y] % Mouse !== 0) {
+        board[x][y] *= Mouse;
+    }
+
+    if (board[x][y] % Path === 0) {
+        board[x][y] /= Path;
+    }
+
+    frames.push(copyBoard(board));
+
+    for (const neighbor of neighbors) {
+        let [i, j] = neighbor;
+        if (board[i][j] % Path === 0) {
+            board[x][y] /= Mouse;
+            traversePath(board, neighbor, graph, frames);
+            break;
+        }
+    }
+
+    return frames;
+}
+
+
+export {generateMaze, generateBoard, Mouse, Cheese, Visited, Path, PathFinder}
