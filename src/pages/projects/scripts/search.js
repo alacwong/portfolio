@@ -257,6 +257,91 @@ function BFS(board, graph) {
     return frames;
 }
 
+function AStarSearch(board, graph, h) {
+
+    const frames = [];
+    let cheeses = numCheese(board);
+
+    while (cheeses > 0) {
+        let mouse = getMouse(board);
+        let parent = {};
+        let q = [[graph.hash(mouse), 0]];
+
+        // function to mark back path
+        const markPath = (node) => {
+            let [n, m] = node;
+            board[n][m] *= Path;
+            if (parent[graph.hash(node)] !== undefined) {
+                markPath(graph.unHash(parent[graph.hash(node)]));
+            }
+        }
+
+        while (q.length > 0) {
+
+            const [node, ,index] = q.reduce(
+                (acc, curr, index) => {
+                       let [ ,weight, ] = acc;
+                       let [coord2, weight2] = curr;
+                       if (weight2 < weight) {
+                           return [coord2, weight, index];
+                       } else {
+                           return acc;
+                       }
+                }, [...q[0], 0]
+            );
+
+            let [i, j] = graph.unHash(node);
+            q.splice(index, 1);
+            board[i][j] *= Visited;
+            frames.push(copyBoard(board));
+
+            if (board[i][j] % Cheese === 0) {
+                cheeses --;
+                markPath([i, j]);
+                break;
+            }
+
+            const neighbors = graph.get([i, j])
+            for (const neighbor of neighbors) {
+                let [x, y] = neighbor;
+                if (board[x][y] % Visited !== 0 && !q.map(node => node[0]).includes(graph.hash([x, y]))) {
+                    parent[graph.hash(neighbor)] = graph.hash([i, j]);
+                    q.push([graph.hash(neighbor), h(neighbor, board)]);
+                }
+            }
+        }
+
+        frames.push(...traversePath(board, mouse, graph,[]));
+        unVisit(board);
+    }
+    return frames;
+}
+
+function manhattanGreedy(coord, board) {
+
+    const manhattan = (coord1, coord2) => {
+        const [x, y] = coord1;
+        const [i, j] = coord2;
+        return Math.abs(x - i) + Math.abs(y - j);
+    }
+
+    return allCheeses(board).reduce(
+        (acc, curr) => Math.min(manhattan(coord, curr), acc), board.length * 2 + 1
+    )
+}
+
+function allCheeses(board) {
+    let cheeses = [];
+    for (let i=0; i < board.length; i++) {
+        for (let j=0; j < board[i].length; j ++) {
+            if (board[i][j] % Cheese === 0) {
+                cheeses.push([i, j]);
+            }
+        }
+    }
+    return cheeses
+}
+
 function copyBoard (board) {
     const temp = []
 
@@ -316,6 +401,10 @@ class PathFinder {
     run(board, graph, algorithm){
         if (algorithm === 'bfs') {
             return BFS(board, graph);
+        } else if(algorithm === 'astar') {
+            return AStarSearch(board, graph, manhattanGreedy)
+        } else if (algorithm === 'dfs') {
+            return DFS(board, graph);
         }
     }
 

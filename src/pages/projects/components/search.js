@@ -32,7 +32,7 @@ export default class Search extends Component {
 
     run() {
         const finder = new PathFinder();
-        const frames = finder.run(this.state.board, this.state.graph, 'bfs');
+        const frames = finder.run(this.state.board, this.state.graph, 'astar');
         this.animateBoard(frames);
     }
 
