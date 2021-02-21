@@ -177,7 +177,7 @@ function DFS(board, graph) {
             let [x, y] = neighbor;
             if (board[x][y] % Visited !== 0) {
                 const cheese = dfsHelper(neighbor);
-                if (cheese) {
+                if (cheese.length > 0) {
                     board[x][y] *= Path;
                     return cheese;
                 }
@@ -189,7 +189,7 @@ function DFS(board, graph) {
     }
 
     let mouse = getMouse(board)
-    dfsHelper(mouse);
+    console.log(dfsHelper(mouse));
     //console.log(traversePath(board, mouse, graph, []), 't')
     return board;
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import FadeIn from "react-fade-in";
-import {generateMaze, generateBoard, Mouse, Cheese, PathFinder, Visited} from "../scripts/search";
+import {generateMaze, generateBoard, Mouse, Cheese, PathFinder, Visited, Path} from "../scripts/search";
 
 export default class Search extends Component {
 
@@ -31,11 +31,16 @@ export default class Search extends Component {
                     img = <img src={'assets/mouse.png'}/>
                 } else if (this.state.board[i][j] % Cheese === 0) {
                     img = <img src={'assets/cheese.jpg'}/>
-                }else if (this.state.board[i][j] % Visited === 0){
+                }else if (this.state.board[i][j] % Path === 0){
                     img = <img src={'assets/path.jpg'}/>
                 } else {
                     img = ''
                 }
+
+                if (this.state.board[i][j] % Visited === 0 ){
+                    style.backgroundColor = '#c48d14';
+                }
+
                 row.push(
                     <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; {img} </span>
                 );
