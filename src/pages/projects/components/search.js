@@ -11,6 +11,8 @@ export default class Search extends Component {
             board: generateBoard(20)
         }
 
+        console.log(this.state.graph);
+
        this.animateBoard = this.animateBoard.bind(this);
         this.run = this.run.bind(this);
     }
@@ -32,7 +34,7 @@ export default class Search extends Component {
 
     run() {
         const finder = new PathFinder();
-        const frames = finder.dfs(this.state.board, this.state.graph);
+        const frames = finder.run(this.state.board, this.state.graph, 'bfs');
         this.animateBoard(frames);
     }
 

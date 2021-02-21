@@ -231,7 +231,7 @@ function BFS(board, graph) {
         }
 
         while (q.length > 0) {
-            let [i, j] = graph.unHash(q.pop())
+            let [i, j] = graph.unHash(q.shift())
             board[i][j] *= Visited;
             frames.push(copyBoard(board));
 
@@ -242,11 +242,16 @@ function BFS(board, graph) {
             }
 
             const neighbors = graph.get([i, j])
+            console.log([i, j], neighbors);
             for (const neighbor of neighbors) {
                 let [x, y] = neighbor;
-                if (board[x][y] % Visited !== 0) {
+                if (board[x][y] % Visited !== 0 && !q.includes(graph.hash([x, y]))) {
                     parent[graph.hash(neighbor)] = graph.hash([i, j]);
-                    q.push(neighbor);
+                    console.log('push', [x, y], board[x][y], q)
+                    q.push(graph.hash(neighbor));
+                }
+                else {
+                    console.log('dont push', [x, y], board[x][y])
                 }
             }
         }
