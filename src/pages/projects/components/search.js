@@ -11,10 +11,29 @@ export default class Search extends Component {
             board: generateBoard(20)
         }
 
-        this.setState({board: new PathFinder().dfs(this.state.board, this.state.graph)});
+       this.animateBoard = this.animateBoard.bind(this);
+        this.run = this.run.bind(this);
     }
 
     componentDidMount() {
+    }
+
+    animateBoard(frames) {
+        let index = 0;
+        let animator = setInterval(() => {
+            if (index < frames.length) {
+                this.setState({board: frames[index]});
+                index++;
+            } else {
+                clearInterval(animator);
+            }
+        } ,100);
+    }
+
+    run() {
+        const finder = new PathFinder();
+        const frames = finder.dfs(this.state.board, this.state.graph);
+        this.animateBoard(frames);
     }
 
     render() {
@@ -66,6 +85,7 @@ export default class Search extends Component {
                             <li>Breadth first search visualization</li>
                             <li>A * star search visualization</li>
                         </ul>
+                        <button onClick={this.run}>Run</button>
                     </div>
                 </div>
             </FadeIn>

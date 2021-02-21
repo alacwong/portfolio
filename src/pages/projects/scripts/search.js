@@ -160,11 +160,13 @@ function generateBoard(n) {
 
 function DFS(board, graph) {
     // Run Depth First Search
+    const frames = [];
     let cheeses = numCheese(board);
 
     const dfsHelper = (mouse) => {
         const [i, j] = mouse;
         board[i][j] *= Visited;
+        frames.push(copyBoard(board));
 
         if (board[i][j] % Cheese === 0) {
             cheeses --;
@@ -179,6 +181,7 @@ function DFS(board, graph) {
                 const cheese = dfsHelper(neighbor);
                 if (cheese.length > 0) {
                     board[x][y] *= Path;
+                    frames.push(copyBoard(board));
                     return cheese;
                 }
             }
@@ -189,9 +192,17 @@ function DFS(board, graph) {
     }
 
     let mouse = getMouse(board)
-    console.log(dfsHelper(mouse));
-    //console.log(traversePath(board, mouse, graph, []), 't')
-    return board;
+    while (cheeses > 0) {
+        console.log(board, cheeses);
+        let newMouse = dfsHelper(mouse);
+        let pathToCheese = traversePath(board, mouse, graph, []);
+        frames.push(...pathToCheese)
+        unVisit(board);
+        mouse = newMouse;
+        //console.log(board, 'univisited');
+    }
+
+    return frames;
 }
 
 function copyBoard (board) {
@@ -211,7 +222,9 @@ function copyBoard (board) {
 function unVisit(board) {
     for (let i=0; i < board.length; i++) {
         for (let j=0; j < board.length; j++) {
-            board[i][j]/=Visited;
+            if (board[i][j] % Visited === 0) {
+                board[i][j]/=Visited;
+            }
         }
     }
 }
@@ -259,6 +272,10 @@ function traversePath(board, mouse, graph, frames) {
 
     if (board[x][y] % Path === 0) {
         board[x][y] /= Path;
+    }
+
+    if (board[x][y] % Cheese === 0){
+        board[x][y] /= Cheese;
     }
 
     frames.push(copyBoard(board));
