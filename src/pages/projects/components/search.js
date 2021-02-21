@@ -11,8 +11,6 @@ export default class Search extends Component {
             board: generateBoard(20)
         }
 
-        console.log(this.state.graph);
-
        this.animateBoard = this.animateBoard.bind(this);
         this.run = this.run.bind(this);
     }
