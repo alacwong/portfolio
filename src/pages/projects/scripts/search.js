@@ -130,6 +130,14 @@ class Graph {
             }, {}
         );
     }
+
+    hash(coord) {
+        return getIndex(this.n, coord)
+    }
+
+    unHash(index) {
+        return getCoords(this.n, index);
+    }
 }
 
 function generateBoard(n) {
@@ -193,15 +201,59 @@ function DFS(board, graph) {
 
     let mouse = getMouse(board)
     while (cheeses > 0) {
-        console.log(board, cheeses);
         let newMouse = dfsHelper(mouse);
         let pathToCheese = traversePath(board, mouse, graph, []);
         frames.push(...pathToCheese)
         unVisit(board);
         mouse = newMouse;
-        //console.log(board, 'univisited');
     }
+    unVisit(board);
 
+    return frames;
+}
+
+function BFS(board, graph) {
+    const frames = [];
+    let cheeses = numCheese(board);
+
+    while (cheeses > 0) {
+        let mouse = getMouse(board);
+        let parent = {};
+        let q = [graph.hash(mouse)]
+
+        // function to mark back path
+        const markPath = (node) => {
+            let [n, m] = node;
+            board[n][m] *= Path;
+            if (parent[graph.hash(node)] !== undefined) {
+                markPath(graph.unHash(parent[graph.hash(node)]));
+            }
+        }
+
+        while (q.length > 0) {
+            let [i, j] = graph.unHash(q.pop())
+            board[i][j] *= Visited;
+            frames.push(copyBoard(board));
+
+            if (board[i][j] % Cheese === 0) {
+                cheeses --;
+                markPath([i, j]);
+                break;
+            }
+
+            const neighbors = graph.get([i, j])
+            for (const neighbor of neighbors) {
+                let [x, y] = neighbor;
+                if (board[x][y] % Visited !== 0) {
+                    parent[graph.hash(neighbor)] = graph.hash([i, j]);
+                    q.push(neighbor);
+                }
+            }
+        }
+
+        frames.push(...traversePath(board, mouse, graph,[]));
+        unVisit(board);
+    }
     return frames;
 }
 
@@ -258,6 +310,13 @@ class PathFinder {
 
     dfs(board, graph){
         return DFS(board, graph);
+    }
+
+
+    run(board, graph, algorithm){
+        if (algorithm === 'bfs') {
+            return BFS(board, graph);
+        }
     }
 
 }
