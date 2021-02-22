@@ -10,6 +10,7 @@ export default class Search extends Component {
         this.state = {
             graph: generateMaze(20),
             board: generateBoard(20),
+            amRunning: false,
         }
 
         this.animateBoard = this.animateBoard.bind(this);
@@ -27,6 +28,7 @@ export default class Search extends Component {
                 this.setState({board: frames[index].board});
                 index++;
             } else {
+                this.setState({amRunning: false});
                 clearInterval(animator);
             }
         } ,80);
@@ -35,6 +37,7 @@ export default class Search extends Component {
     run(algorithm) {
         const finder = new PathFinder();
         const frames = finder.run(copyBoard(this.state.mementoBoard, 20), this.state.graph, algorithm);
+        this.setState({amRunning: true});
         this.animateBoard(frames);
     }
 
@@ -75,19 +78,35 @@ export default class Search extends Component {
 
         const algorithmWrapper = {
             bfs: () => {
-                this.run('bfs')
+                if (!this.state.amRunning) {
+                    this.run('bfs');
+                } else {
+                    window.alert('You cannot do that right now!');
+                }
             },
 
             dfs: () => {
-                this.run('dfs')
+                if (!this.state.amRunning) {
+                    this.run('astar');
+                } else {
+                    window.alert('You cannot do that right now!');
+                }
             },
 
             astar: () => {
-                this.run('astar')
+                if (!this.state.amRunning) {
+                    this.run('astar');
+                } else {
+                    window.alert('You cannot do that right now!');
+                }
             },
 
             astar2: () => {
-                this.run('astar2')
+                if (!this.state.amRunning) {
+                    this.run('astar2');
+                } else {
+                    window.alert('You cannot do that right now!');
+                }
             }
         }
 

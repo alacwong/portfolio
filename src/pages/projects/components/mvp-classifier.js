@@ -52,7 +52,8 @@ export default function MvpClassifier() {
             </div>
             <div className='api'>
                 <JSONPretty theme={theme} data={data}/>
-                <button onClick={getData}>Try out the api!</button>
+                <p style={{color: "white", fontStyle: 'italic'}}> Temporarily disabled due to deployment issues</p>
+                <button disabled={true} onClick={getData} >Try out the api!</button>
                 <div className='controls'>
                     <p>K players: </p>
                     <span className='slider'>
