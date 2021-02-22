@@ -81,7 +81,7 @@ export default class Search extends Component {
                 if (!this.state.amRunning) {
                     this.run('bfs');
                 } else {
-                    window.alert('You cannot do that right now!');
+                    window.alert('Animation running! Wait for it to end!');
                 }
             },
 
@@ -89,7 +89,7 @@ export default class Search extends Component {
                 if (!this.state.amRunning) {
                     this.run('astar');
                 } else {
-                    window.alert('You cannot do that right now!');
+                    window.alert('Animation running! Wait for it to end!');
                 }
             },
 
@@ -97,7 +97,7 @@ export default class Search extends Component {
                 if (!this.state.amRunning) {
                     this.run('astar');
                 } else {
-                    window.alert('You cannot do that right now!');
+                    window.alert('Animation running! Wait for it to end!');
                 }
             },
 
@@ -105,7 +105,7 @@ export default class Search extends Component {
                 if (!this.state.amRunning) {
                     this.run('astar2');
                 } else {
-                    window.alert('You cannot do that right now!');
+                    window.alert('Animation running! Wait for it to end!');
                 }
             }
         }
