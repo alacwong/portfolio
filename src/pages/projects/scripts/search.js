@@ -208,7 +208,7 @@ function DFS(board, graph) {
         mouse = newMouse;
     }
     unVisit(board);
-
+    frames.push(copyBoard(board));
     return frames;
 }
 
@@ -253,6 +253,7 @@ function BFS(board, graph) {
 
         frames.push(...traversePath(board, mouse, graph,[]));
         unVisit(board);
+        frames.push(copyBoard(board));
     }
     return frames;
 }
@@ -266,6 +267,9 @@ function AStarSearch(board, graph, h) {
         let mouse = getMouse(board);
         let parent = {};
         let q = [[graph.hash(mouse), 0]];
+        let distance = {};
+        distance[graph.hash(mouse)] = 0;
+
 
         // function to mark back path
         const markPath = (node) => {
@@ -290,6 +294,7 @@ function AStarSearch(board, graph, h) {
                 }, [...q[0], 0]
             );
 
+
             let [i, j] = graph.unHash(node);
             q.splice(index, 1);
             board[i][j] *= Visited;
@@ -306,13 +311,15 @@ function AStarSearch(board, graph, h) {
                 let [x, y] = neighbor;
                 if (board[x][y] % Visited !== 0 && !q.map(node => node[0]).includes(graph.hash([x, y]))) {
                     parent[graph.hash(neighbor)] = graph.hash([i, j]);
-                    q.push([graph.hash(neighbor), h(neighbor, board)]);
+                    distance[graph.hash(neighbor)] = distance[graph.hash([i, j])] + 1
+                    q.push([graph.hash(neighbor), h(neighbor, board) + distance[graph.hash(neighbor)]]);
                 }
             }
         }
 
         frames.push(...traversePath(board, mouse, graph,[]));
         unVisit(board);
+        frames.push(copyBoard(board));
     }
     return frames;
 }
