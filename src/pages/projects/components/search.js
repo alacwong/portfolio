@@ -84,6 +84,10 @@ export default class Search extends Component {
 
             astar: () => {
                 this.run('astar')
+            },
+
+            astar2: () => {
+                this.run('astar2')
             }
         }
 
@@ -121,6 +125,7 @@ export default class Search extends Component {
                                 <Dropdown.Item onClick={algorithmWrapper.dfs}>Depth First Search</Dropdown.Item>
                                 <Dropdown.Item onClick={algorithmWrapper.bfs}>Breadth First Search</Dropdown.Item>
                                 <Dropdown.Item onClick={algorithmWrapper.astar}>A Star Search</Dropdown.Item>
+                                <Dropdown.Item onClick={algorithmWrapper.astar2}>A Star Search (Log Sum)</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>

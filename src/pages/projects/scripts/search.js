@@ -324,16 +324,22 @@ function AStarSearch(board, graph, h) {
     return frames;
 }
 
-function manhattanGreedy(coord, board) {
+function manhattan(coord1, coord2) {
+    const [x, y] = coord1;
+    const [i, j] = coord2;
+    return Math.abs(x - i) + Math.abs(y - j);
+}
 
-    const manhattan = (coord1, coord2) => {
-        const [x, y] = coord1;
-        const [i, j] = coord2;
-        return Math.abs(x - i) + Math.abs(y - j);
-    }
+function manhattanGreedy(coord, board) {
 
     return allCheeses(board).reduce(
         (acc, curr) => Math.min(manhattan(coord, curr), acc), board.length * 2 + 1
+    )
+}
+
+function manhattanCluster(coord, board) {
+    return allCheeses(board).reduce(
+        (acc, curr) => acc + Math.log2(manhattan(coord, curr)), 0
     )
 }
 
@@ -412,6 +418,8 @@ class PathFinder {
             return AStarSearch(board, graph, manhattanGreedy)
         } else if (algorithm === 'dfs') {
             return DFS(board, graph);
+        } else if (algorithm === 'astar2') {
+            return AStarSearch(board,graph, manhattanCluster)
         }
     }
 
