@@ -16,7 +16,7 @@ export default function About () {
                         playing basketball and swimming.
                     </p>
                 </div>
-                <img src='assets/ball.jpg'/>
+                <img src='assets/ball.JPG'/>
             </div>
 
             <div className='exp'>
@@ -35,10 +35,10 @@ export default function About () {
                 <h2>PickEasy Software Developer(Co-op)</h2>
 
                 <ul>
-                    <li>Digitized menus into a Angular Web application with QR-code</li>
-                    <li>Developed Secure Covid 19 contact tracing api in Flask</li>
-                    <li>Developed Menu Editor platform for restaurant clients to use</li>
-                    <li>Developed sign</li>
+                    <li>Digitized menus into a Angular Web application with QR-code with Flask Api</li>
+                    <li>Developed Secure Covid 19 contact tracing api in Flask with SHA-256 encryption</li>
+                    <li>Developed Menu Editor platform for restaurant clients to upload images/change menu content</li>
+                    <li>Developed sign-up platform with email verification or social media verification</li>
                 </ul>
 
             </div>
