@@ -24,7 +24,7 @@ export default class Search extends Component {
         let index = 0;
         let animator = setInterval(() => {
             if (index < frames.length) {
-                this.setState({board: frames[index]});
+                this.setState({board: frames[index].board});
                 index++;
             } else {
                 clearInterval(animator);

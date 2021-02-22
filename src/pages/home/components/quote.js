@@ -10,10 +10,9 @@ export default class Quote extends Component{
 
         this.state = {
             quotes: [
-                '"Some inspirational quote"',
-                '"Another inspirational quote"',
-                '"Yet another inspirational quote"',
-                '"And one"'
+                '"If it was easy, everyone would do it"',
+                '"I think it is possible for ordinary people to be extraordinary"',
+                '"Failure is not the opposite of success, it is part of success"'
             ],
             index: 0,
             animate: false

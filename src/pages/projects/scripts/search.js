@@ -174,7 +174,7 @@ function DFS(board, graph) {
     const dfsHelper = (mouse) => {
         const [i, j] = mouse;
         board[i][j] *= Visited;
-        frames.push(copyBoard(board));
+        frames.push({board: copyBoard(board)});
 
         if (board[i][j] % Cheese === 0) {
             cheeses --;
@@ -189,7 +189,7 @@ function DFS(board, graph) {
                 const cheese = dfsHelper(neighbor);
                 if (cheese.length > 0) {
                     board[x][y] *= Path;
-                    frames.push(copyBoard(board));
+                    frames.push({board: copyBoard(board)});
                     return cheese;
                 }
             }
@@ -208,7 +208,7 @@ function DFS(board, graph) {
         mouse = newMouse;
     }
     unVisit(board);
-    frames.push(copyBoard(board));
+    frames.push({board: copyBoard(board)});
     return frames;
 }
 
@@ -233,7 +233,7 @@ function BFS(board, graph) {
         while (q.length > 0) {
             let [i, j] = graph.unHash(q.shift())
             board[i][j] *= Visited;
-            frames.push(copyBoard(board));
+            frames.push({board: copyBoard(board)});
 
             if (board[i][j] % Cheese === 0) {
                 cheeses --;
@@ -253,7 +253,7 @@ function BFS(board, graph) {
 
         frames.push(...traversePath(board, mouse, graph,[]));
         unVisit(board);
-        frames.push(copyBoard(board));
+        frames.push({board: copyBoard(board)});
     }
     return frames;
 }
@@ -298,7 +298,7 @@ function AStarSearch(board, graph, h) {
             let [i, j] = graph.unHash(node);
             q.splice(index, 1);
             board[i][j] *= Visited;
-            frames.push(copyBoard(board));
+            frames.push({board: copyBoard(board)});
 
             if (board[i][j] % Cheese === 0) {
                 cheeses --;
@@ -319,7 +319,7 @@ function AStarSearch(board, graph, h) {
 
         frames.push(...traversePath(board, mouse, graph,[]));
         unVisit(board);
-        frames.push(copyBoard(board));
+        frames.push({board: copyBoard(board)});
     }
     return frames;
 }
@@ -339,7 +339,7 @@ function manhattanGreedy(coord, board) {
 
 function manhattanCluster(coord, board) {
     return allCheeses(board).reduce(
-        (acc, curr) => acc + Math.log2(manhattan(coord, curr)), 0
+        (acc, curr) => acc + Math.log(manhattan(coord, curr)), 0
     )
 }
 
@@ -441,7 +441,8 @@ function traversePath(board, mouse, graph, frames) {
         board[x][y] /= Cheese;
     }
 
-    frames.push(copyBoard(board));
+
+    frames.push({board: copyBoard(board)});
 
     for (const neighbor of neighbors) {
         let [i, j] = neighbor;
@@ -454,6 +455,5 @@ function traversePath(board, mouse, graph, frames) {
 
     return frames;
 }
-
 
 export {generateMaze, generateBoard, Mouse, Cheese, Visited, Path, PathFinder, copyBoard}
