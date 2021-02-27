@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/1337.css';
 import ReactBootstrapSlider from "react-bootstrap-slider";
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function MvpClassifier() {
 
@@ -14,6 +16,8 @@ export default function MvpClassifier() {
         'Best Scorer': 'James Harden',
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const theme = {
         main: 'border: 1px solid gray;border-radius:10px;padding:10px;line-height:1.3;' +
             'color:black;background:#ffffff;overflow:auto;',
@@ -25,9 +29,11 @@ export default function MvpClassifier() {
     }
 
     const getData = () => {
+        setIsLoading(true);
         fetch(url).then(res => res.json()).then(
             data => {
                 setData(data);
+                setIsLoading(false);
             }
         )
     }
@@ -52,7 +58,12 @@ export default function MvpClassifier() {
             </div>
             <div className='api'>
                 <JSONPretty theme={theme} data={data}/>
-                <button onClick={getData} >Try out the api!</button>
+                <button onClick={getData}>
+                    {
+                        !isLoading ? "Try out the api!" :
+                        <FontAwesomeIcon icon={ faCircleNotch} className="fa-spin" />
+                    }
+                </button>
                 <div className='controls'>
                     <p>K players: </p>
                     <span className='slider'>
