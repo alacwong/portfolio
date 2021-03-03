@@ -1,6 +1,7 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
-import {Cheese, generateBoard, generateMaze, Mouse, Path, Visited} from "../scripts/search";
+import {generateMaze} from "../scripts/search";
+import {Cat, Mouse, Path, Visited, Cheese, generateBoard} from "../scripts/ai";
 
 
 export default class Ai extends Component{
@@ -11,7 +12,6 @@ export default class Ai extends Component{
             graph: generateMaze(20),
             board: generateBoard(20),
         }
-
     }
 
 
@@ -28,8 +28,21 @@ export default class Ai extends Component{
                     style.backgroundColor = '#c48d14';
                 }
 
+                let img;
+                if (this.state.board[i][j] % Mouse === 0) {
+                    img = <img src={'assets/mouse.png'}/>
+                } else if (this.state.board[i][j] % Cheese === 0) {
+                    img = <img src={'assets/cheese.jpg'}/>
+                }else if (this.state.board[i][j] % Path === 0){
+                    img = <img src={'assets/path.jpg'}/>
+                } else if (this.state.board[i][j] % Cat === 0) {
+                    img = <img src={'assets/cat.png'}/>
+                }else {
+                    img = ''
+                }
+
                 row.push(
-                    <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp; </span>
+                    <span key={`tile: ${i}, ${j}`} className='board-tile' style={style}> &nbsp;{img} </span>
                 );
             }
             board.push(

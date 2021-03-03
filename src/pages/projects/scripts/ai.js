@@ -1,5 +1,5 @@
 // class
-import {copyBoard} from "./search";
+import {generateBoard as generateBoardOld} from "./search";
 
 const Mouse = 2;
 const Cheese = 3;
@@ -82,3 +82,22 @@ function getPath(parent, node, graph) {
 
     return path;
 }
+
+function generateBoard(n) {
+
+    // generate board with cats
+    const board = generateBoardOld(n);
+
+    const numCats = Math.ceil(1 + Math.random()* 3);
+
+    for (let i=0; i < numCats; i++) {
+       let [x, y] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)]
+        if (board[x][y]% Mouse !== 0) {
+            board[x][y] *= Cat;
+        }
+    }
+    console.log(board);
+    return board;
+}
+
+export {Mouse, Cheese, Visited, Path, Cat, generateBoard}
