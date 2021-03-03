@@ -1,7 +1,7 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
 import {generateMaze} from "../scripts/search";
-import {Cat, Mouse, Path, Visited, Cheese, generateBoard} from "../scripts/ai";
+import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard} from "../scripts/ai";
 
 
 export default class Ai extends Component{
@@ -51,6 +51,8 @@ export default class Ai extends Component{
                 </div>
             )
         }
+
+        console.log(renderBoard(this.state.board, this.state.graph));
 
         return (
             <FadeIn>

@@ -1,5 +1,5 @@
 // class
-import {generateBoard as generateBoardOld} from "./search";
+import {generateBoard as generateBoardOld, copyBoard} from "./search";
 
 const Mouse = 2;
 const Cheese = 3;
@@ -11,7 +11,8 @@ function BFS(board, graph, cat) {
 
     let parent = {};
     let q = [graph.hash(cat)]
-    let mouse = []
+    let mouse;
+    let path = [];
 
         // function to mark back path
 
@@ -21,7 +22,7 @@ function BFS(board, graph, cat) {
 
         if (board[i][j] % Mouse === 0) {
             mouse =[i, j];
-            parent[graph.hash(mouse)] = graph.hash([i, j])
+            path = getPath(parent, graph.hash([i, j]), graph);
             break;
         }
 
@@ -34,6 +35,8 @@ function BFS(board, graph, cat) {
             }
         }
     }
+
+    return path;
 }
 
 function getDistanceMap(graph) {
@@ -75,9 +78,9 @@ function getPath(parent, node, graph) {
 
     path.push(node);
 
-    while (parent[graph.hash(node)] !== undefined ){
+    while (parent[node] !== undefined ){
         node = parent[node];
-        path.push(graph.hash(node));
+        path.push(graph.unHash(node));
     }
 
     return path;
@@ -96,8 +99,31 @@ function generateBoard(n) {
             board[x][y] *= Cat;
         }
     }
-    console.log(board);
     return board;
 }
 
-export {Mouse, Cheese, Visited, Path, Cat, generateBoard}
+function getTile(board, type) {
+    const tiles = [];
+    for (let i=0; i < board.length; i++) {
+        for (let j=0; j < board.length; j++) {
+            if (board[i][j] % type === 0) {
+                tiles.push([i, j])
+            }
+        }
+    }
+    return tiles;
+}
+
+function renderBoard(board, graph) {
+
+    board = copyBoard(board);
+
+    const cats = getTile(board, Cat);
+    const mouse = getTile(board, Mouse)[0];
+    for (let i=0; i < cats.length; i++) {
+       let path = BFS(copyBoard(board),graph, cats[i]);
+    }
+
+}
+
+export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard}
