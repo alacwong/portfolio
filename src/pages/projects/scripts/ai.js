@@ -83,7 +83,7 @@ function getPath(parent, node, graph) {
         path.push(graph.unHash(node));
     }
 
-    return path;
+    return path.reverse();
 }
 
 function generateBoard(n) {
@@ -122,7 +122,16 @@ function renderBoard(board, graph) {
     const mouse = getTile(board, Mouse)[0];
     for (let i=0; i < cats.length; i++) {
        let path = BFS(copyBoard(board),graph, cats[i]);
+       if (path.length > 2) {
+           let [x, y]= cats[i]
+           board[x][y] /= Cat;
+
+           [x, y] = path[1];
+           board[x][y] *= Cat;
+       }
     }
+
+    return board;
 
 }
 

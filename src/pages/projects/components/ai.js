@@ -12,11 +12,25 @@ export default class Ai extends Component{
             graph: generateMaze(20),
             board: generateBoard(20),
         }
+
+        this.animateBoard = this.animateBoard.bind(this);
     }
 
+    animateBoard() {
+
+        const index = 0
+        let animator = setInterval(() => {
+            if (index < 10) {
+                this.setState({board: renderBoard(this.state.board, this.state.graph)});
+            } else {
+                this.setState({amRunning: false});
+                clearInterval(animator);
+            }
+        } ,150);
+
+    }
 
     render () {
-
         const board = []
         const n = 20;
         for (let i=0; i < n; i++) {
@@ -52,8 +66,6 @@ export default class Ai extends Component{
             )
         }
 
-        console.log(renderBoard(this.state.board, this.state.graph));
-
         return (
             <FadeIn>
                 <div className='search-project'>
@@ -69,6 +81,7 @@ export default class Ai extends Component{
                             <li>Breadth first search visualization</li>
                             <li>A * star search visualization (Manhattan Distance to closest cheese)</li>
                         </ul>
+                        <button onClick={this.animateBoard}></button>
                     </div>
                 </div>
             </FadeIn>
