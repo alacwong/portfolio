@@ -111,6 +111,10 @@ class Graph {
         return this.graph[index].map(node => getCoords(this.n, node));
     }
 
+    getIndices(index) {
+        return this.graph[index];
+    }
+
     getWalls(coords) {
         const styleMap = {
             '0,-1': 'borderLeft',
