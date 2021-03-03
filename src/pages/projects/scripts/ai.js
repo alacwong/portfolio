@@ -36,10 +36,37 @@ function BFS(board, graph, cat) {
     }
 }
 
-function distanceMap(graph) {
+function getDistanceMap(graph) {
 
+    const distanceMap = [];
 
+    // generate distance map
+    for (let i=0; i < graph.n * graph.n; i++) {
+        let row = []
+        for (let j=0; j < graph.n * graph.n; j++) {
+            row.push(-1);
+        }
+        distanceMap.push(row);
+    }
 
+    // run bfs multiple times
+    for (let i=0; i < graph.n * graph.n; i++) {
+        let q = [i];
+        distanceMap[i][i] = 0;
+        while (q.length) {
+            let node = q.unshift();
+            let neighbors = graph.getIndices();
+
+            for (let neighbor of neighbors) {
+                if (distanceMap[i][neighbor] === -1) {
+                    distanceMap[i][neighbor] = distanceMap[i][node] + 1;
+                    q.push(neighbor);
+                }
+            }
+        }
+    }
+
+    return distanceMap;
 }
 
 function getPath(parent, node, graph) {
