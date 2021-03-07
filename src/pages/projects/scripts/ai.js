@@ -76,7 +76,7 @@ function getPath(parent, node, graph) {
     // get path from parent
     const path = [];
 
-    path.push(node);
+    path.push(graph.unHash(node));
 
     while (parent[node] !== undefined ){
         node = parent[node];
@@ -122,17 +122,98 @@ function renderBoard(board, graph) {
     const mouse = getTile(board, Mouse)[0];
     for (let i=0; i < cats.length; i++) {
        let path = BFS(copyBoard(board),graph, cats[i]);
-       if (path.length > 2) {
+       if (path.length > 1) {
            let [x, y]= cats[i]
            board[x][y] /= Cat;
 
            [x, y] = path[1];
            board[x][y] *= Cat;
+
+           // check for mouse
+           if (board[x][y] % Mouse === 0) {
+               board[x][y] /= Mouse;
+           }
        }
     }
 
-    return board;
+    let state = '';
 
+    // eaten
+    if (board[mouse[0]][mouse[1]] % Mouse !== 0 ){
+        state = 'Lose'
+    } else {
+        state = 'Continue'
+    }
+
+    return [board, state];
+
+}
+
+function AStarSearch(board, graph, h) {
+
+    let mouse =  getTile(board, Mouse)[0];
+    let parent = {};
+    let q = [[graph.hash(mouse), 0]];
+    let distance = {};
+    distance[graph.hash(mouse)] = 0;
+
+
+    // function to mark back path
+    const markPath = (node) => {
+        let [n, m] = node;
+        board[n][m] *= Path;
+        if (parent[graph.hash(node)] !== undefined) {
+            markPath(graph.unHash(parent[graph.hash(node)]));
+        }
+    }
+
+    while (q.length > 0) {
+
+        const [node, ,index] = q.reduce(
+            (acc, curr, index) => {
+                let [ ,weight, ] = acc;
+                let [coord2, weight2] = curr;
+                if (weight2 < weight) {
+                    return [coord2, weight, index];
+                    } else {
+                        return acc;
+                    }
+                }, [...q[0], 0]
+            );
+
+
+        let [i, j] = graph.unHash(node);
+        q.splice(index, 1);
+        board[i][j] *= Visited;
+
+        if (board[i][j] % Cheese === 0) {
+            markPath([i, j]);
+            break;
+        }
+
+        const neighbors = graph.get([i, j])
+        for (const neighbor of neighbors) {
+            let [x, y] = neighbor;
+            if (board[x][y] % Visited !== 0 && !q.map(node => node[0]).includes(graph.hash([x, y]))) {
+                parent[graph.hash(neighbor)] = graph.hash([i, j]);
+                distance[graph.hash(neighbor)] = distance[graph.hash([i, j])] + 1
+                q.push([graph.hash(neighbor), h(neighbor, board) + distance[graph.hash(neighbor)]]);
+            }
+        }
+    }
+}
+
+function heuristic(board, mouse, graph, distanceMap) {
+    // exponential distance of cat
+    const cats = getTile(board, Cat);
+    const mouseIndex = graph.hash(mouse);
+    let cost = 0;
+
+    for (const cat of cats) {
+        let catIndex = graph.hash(cat);
+        cost += 60 * Math.pow(0.6, distanceMap[catIndex][mouseIndex]);
+    }
+    return cost;
 }
 
 export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard}

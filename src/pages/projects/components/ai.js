@@ -18,14 +18,16 @@ export default class Ai extends Component{
 
     animateBoard() {
 
-        const index = 0
         let animator = setInterval(() => {
-            if (index < 10) {
-                this.setState({board: renderBoard(this.state.board, this.state.graph)});
-            } else {
-                this.setState({amRunning: false});
-                clearInterval(animator);
-            }
+                const [board, state] = renderBoard(this.state.board, this.state.graph);
+                this.setState({board: board});
+                if (state === 'Lose') {
+                    clearInterval(animator);
+                    window.alert('Toast!');
+                } else if (state === 'Win') {
+                    clearInterval(animator);
+                    window.alert('Mouse wins!');
+                }
         } ,150);
 
     }
