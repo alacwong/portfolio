@@ -24,7 +24,8 @@ export default class Ai extends Component{
                 cleanBoard(this.state.board),
                 this.state.graph,
                 this.state.distanceMap,
-                'a-star'
+                'a-star',
+                100
             );
             this.setState({board: board},
                 () => {
@@ -74,7 +75,7 @@ export default class Ai extends Component{
                 <div key={`row: ${i}`} className='board-row'>
                     {row}
                 </div>
-            )
+            );
         }
 
         return (
@@ -86,12 +87,6 @@ export default class Ai extends Component{
                     </div>
                     <div className='search-description'>
                         {/*<p>Watching a cat eat cheese uncontested isn't that interesting, let's add a few cats to this!</p>*/}
-                        <ul>
-                            <li> Random maze generation using Prim's algorithm and random loops</li>
-                            <li>Depth first search visualization</li>
-                            <li>Breadth first search visualization</li>
-                            <li>A * star search visualization (Manhattan Distance to closest cheese)</li>
-                        </ul>
                         <button onClick={this.animateBoard}></button>
                     </div>
                 </div>

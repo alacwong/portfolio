@@ -113,9 +113,7 @@ function getTile(board, type) {
     return tiles;
 }
 
-function renderBoard(board, graph, distanceMap, algorithm) {
-
-    console.log(board);
+function renderBoard(board, graph, distanceMap, algorithm, iq) {
 
     const newBoard = copyBoard(board);
     let status = '';
@@ -149,10 +147,27 @@ function renderBoard(board, graph, distanceMap, algorithm) {
        let path = BFS(copyBoard(board),graph, cats[i]);
        if (path.length > 1) {
            let [x, y]= cats[i]
-           newBoard[x][y] /= Cat;
 
-           [x, y] = path[1];
-           newBoard[x][y] *= Cat;
+           if (Math.random() <= (iq - 90)/ (137 - 90)) { //cat makes correct move
+               newBoard[x][y] /= Cat;
+
+               [x, y] = path[1];
+               newBoard[x][y] *= Cat;
+           } else { // cat moves randomly or not at all
+               const moves = graph.get([x, y]);
+                const moveNumber = Math.floor(Math.random() * 4);
+                if (moveNumber >= moves.length ) {
+                    break;
+                }
+
+                const [i, j] = moves[moveNumber];
+                if (i === path[1][0] && moves[0][1] === j) {
+                    break;
+                } else {
+                    newBoard[x][y] /= Cat;
+                    newBoard[i][j] *= Cat;
+                }
+           }
 
            // check for mouse
            if (newBoard[x][y] % Mouse === 0) {
@@ -239,14 +254,16 @@ function heuristic(node, board, graph, distanceMap) {
         cost += 60 * Math.pow(0.6, distanceMap[catIndex][nodeIndex]);
     }
 
+    console.log('Cat cost', cost);
 
     // add cost of getting to cheese (linear)
     cost  += cheeses.reduce( (acc, cheese) => {
             const cheeseIndex = graph.hash(cheese);
-            return Math.min(2 * distanceMap[nodeIndex][cheeseIndex], acc)
-        }, 2 * graph.n
+            return Math.min(  distanceMap[nodeIndex][cheeseIndex], acc)
+        }, graph.n
     )
 
+    console.log(cost);
     return cost;
 }
 
