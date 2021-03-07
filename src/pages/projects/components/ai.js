@@ -18,9 +18,8 @@ export default class Ai extends Component{
 
     animateBoard() {
 
-        console.log(this.state.distanceMap);
         let animator = setInterval(() => {
-                const [board, state] = renderBoard(this.state.board, this.state.graph, this.state.distanceMap);
+                const [board, state] = renderBoard(this.state.board, this.state.graph, this.state.distanceMap, 'a-star');
                 this.setState({board: board});
                 if (state === 'Lose') {
                     clearInterval(animator);

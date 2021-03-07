@@ -52,7 +52,6 @@ function getDistanceMap(graph) {
         distanceMap.push(row);
     }
 
-    let k = 0
     // run bfs multiple times
     for (let i=0; i < graph.n * graph.n; i++) {
         let q = [i];
@@ -68,8 +67,6 @@ function getDistanceMap(graph) {
             }
         }
     }
-
-    console.log(distanceMap);
 
     return distanceMap;
 }
@@ -116,12 +113,36 @@ function getTile(board, type) {
     return tiles;
 }
 
-function renderBoard(board, graph, distanceMap) {
+function renderBoard(board, graph, distanceMap, algorithm) {
 
     board = copyBoard(board);
+    let status = '';
 
     const cats = getTile(board, Cat);
     const mouse = getTile(board, Mouse)[0];
+
+
+    // move mouse
+    if (algorithm === 'a-star') {
+        const path = AStarSearch(board, graph, heuristic, distanceMap);
+        if (path.length > 1) {
+            let [i, j] = mouse;
+            board[i][j] /=Mouse;
+
+            [i, j] = path[1];
+            board[i][j] = Mouse;
+
+            if (board[i][j] === Cheese) {
+                board[i][j] /= Cheese;
+                if (countCheese(board) === 0) {
+                    status = 'Win';
+                }
+            }
+        }
+    }
+
+
+    // move cats
     for (let i=0; i < cats.length; i++) {
        let path = BFS(copyBoard(board),graph, cats[i]);
        if (path.length > 1) {
@@ -134,29 +155,23 @@ function renderBoard(board, graph, distanceMap) {
            // check for mouse
            if (board[x][y] % Mouse === 0) {
                board[x][y] /= Mouse;
+               status = 'Lose'
            }
        }
     }
 
-    let state = '';
 
-    // eaten
-    if (board[mouse[0]][mouse[1]] % Mouse !== 0 ){
-        state = 'Lose'
-    } else {
-        state = 'Continue'
-    }
-
-    return [board, state];
+    return [board, status];
 
 }
 
-function AStarSearch(board, graph, h) {
+function AStarSearch(board, graph, h, distanceMap) {
 
     let mouse =  getTile(board, Mouse)[0];
     let parent = {};
     let q = [[graph.hash(mouse), 0]];
     let distance = {};
+    let path = [];
     distance[graph.hash(mouse)] = 0;
 
 
@@ -190,6 +205,7 @@ function AStarSearch(board, graph, h) {
 
         if (board[i][j] % Cheese === 0) {
             markPath([i, j]);
+            path = getPath(parent, [i, j], graph);
             break;
         }
 
@@ -199,23 +215,49 @@ function AStarSearch(board, graph, h) {
             if (board[x][y] % Visited !== 0 && !q.map(node => node[0]).includes(graph.hash([x, y]))) {
                 parent[graph.hash(neighbor)] = graph.hash([i, j]);
                 distance[graph.hash(neighbor)] = distance[graph.hash([i, j])] + 1
-                q.push([graph.hash(neighbor), h(neighbor, board) + distance[graph.hash(neighbor)]]);
+                q.push([graph.hash(neighbor), h(neighbor, board, graph, distanceMap) + distance[graph.hash(neighbor)]]);
             }
         }
     }
+
+    return path;
 }
 
-function heuristic(board, mouse, graph, distanceMap) {
+function heuristic(node, board, graph, distanceMap) {
     // exponential distance of cat
     const cats = getTile(board, Cat);
-    const mouseIndex = graph.hash(mouse);
+    const cheeses = getTile(board, Cheese);
+    const nodeIndex = graph.hash(node);
     let cost = 0;
 
+    // cost of cat
+    // exponential as you get closer to the cat
     for (const cat of cats) {
         let catIndex = graph.hash(cat);
-        cost += 60 * Math.pow(0.6, distanceMap[catIndex][mouseIndex]);
+        cost += 60 * Math.pow(0.6, distanceMap[catIndex][nodeIndex]);
     }
+
+
+    // add cost of getting to cheese (linear)
+    cost  += cheeses.reduce( (acc, cheese) => {
+            const cheeseIndex = graph.hash(cheese);
+            return Math.min(2 * distanceMap[nodeIndex][cheeseIndex], acc)
+        }, 2 * graph.n
+    )
+
     return cost;
+}
+
+function countCheese(board) {
+    let count = 0;
+    for (let i=0; i < board.length; i++) {
+        for (let j=0; j < board.length; j++) {
+            if (board[i][j] % Cheese === 0) {
+                count ++;
+            }
+        }
+    }
+    return count;
 }
 
 export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard, getDistanceMap}
