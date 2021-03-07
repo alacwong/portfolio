@@ -1,6 +1,6 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
-import {generateMaze} from "../scripts/search";
+import {generateMaze, unVisit} from "../scripts/search";
 import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard, getDistanceMap} from "../scripts/ai";
 
 
@@ -19,15 +19,22 @@ export default class Ai extends Component{
     animateBoard() {
 
         let animator = setInterval(() => {
-                const [board, state] = renderBoard(this.state.board, this.state.graph, this.state.distanceMap, 'a-star');
-                this.setState({board: board});
-                if (state === 'Lose') {
-                    clearInterval(animator);
-                    window.alert('Toast!');
-                } else if (state === 'Win') {
-                    clearInterval(animator);
-                    window.alert('Mouse wins!');
-                }
+
+            unVisit(this.state.board);
+            const [board, state] = renderBoard(
+                this.state.board,
+                this.state.graph,
+                this.state.distanceMap,
+                'a-star'
+            );
+            this.setState({board: board});
+            if (state === 'Lose') {
+                clearInterval(animator);
+                window.alert('Toast!');
+            } else if (state === 'Win') {
+                clearInterval(animator);
+                window.alert('Mouse wins!');
+            }
         } ,150);
 
     }

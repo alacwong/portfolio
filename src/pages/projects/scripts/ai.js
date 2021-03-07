@@ -115,26 +115,26 @@ function getTile(board, type) {
 
 function renderBoard(board, graph, distanceMap, algorithm) {
 
-    board = copyBoard(board);
+    const newBoard = copyBoard(board);
     let status = '';
 
-    const cats = getTile(board, Cat);
-    const mouse = getTile(board, Mouse)[0];
+    const cats = getTile(newBoard, Cat);
+    const mouse = getTile(newBoard, Mouse)[0];
 
 
     // move mouse
     if (algorithm === 'a-star') {
-        const path = AStarSearch(board, graph, heuristic, distanceMap);
+        const path = AStarSearch(newBoard, graph, heuristic, distanceMap);
         if (path.length > 1) {
             let [i, j] = mouse;
-            board[i][j] /=Mouse;
+            newBoard[i][j] /=Mouse;
 
             [i, j] = path[1];
-            board[i][j] = Mouse;
+            newBoard[i][j] *= Mouse;
 
-            if (board[i][j] === Cheese) {
-                board[i][j] /= Cheese;
-                if (countCheese(board) === 0) {
+            if (newBoard[i][j] % Cheese === 0) {
+                newBoard[i][j] /= Cheese;
+                if (countCheese(newBoard) === 0) {
                     status = 'Win';
                 }
             }
@@ -147,21 +147,21 @@ function renderBoard(board, graph, distanceMap, algorithm) {
        let path = BFS(copyBoard(board),graph, cats[i]);
        if (path.length > 1) {
            let [x, y]= cats[i]
-           board[x][y] /= Cat;
+           newBoard[x][y] /= Cat;
 
            [x, y] = path[1];
-           board[x][y] *= Cat;
+           newBoard[x][y] *= Cat;
 
            // check for mouse
-           if (board[x][y] % Mouse === 0) {
-               board[x][y] /= Mouse;
+           if (newBoard[x][y] % Mouse === 0) {
+               newBoard[x][y] /= Mouse;
                status = 'Lose'
            }
        }
     }
 
 
-    return [board, status];
+    return [newBoard, status];
 
 }
 
@@ -204,8 +204,8 @@ function AStarSearch(board, graph, h, distanceMap) {
         board[i][j] *= Visited;
 
         if (board[i][j] % Cheese === 0) {
+            path = getPath(parent, graph.hash([i, j]), graph);
             markPath([i, j]);
-            path = getPath(parent, [i, j], graph);
             break;
         }
 

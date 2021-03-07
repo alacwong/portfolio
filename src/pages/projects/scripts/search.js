@@ -460,4 +460,4 @@ function traversePath(board, mouse, graph, frames) {
     return frames;
 }
 
-export {generateMaze, generateBoard, Mouse, Cheese, Visited, Path, PathFinder, copyBoard}
+export {generateMaze, generateBoard, Mouse, Cheese, Visited, Path, PathFinder, copyBoard, unVisit}
