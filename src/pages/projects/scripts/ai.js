@@ -1,5 +1,5 @@
 // class
-import {generateBoard as generateBoardOld, copyBoard} from "./search";
+import {generateBoard as generateBoardOld, copyBoard, unVisit} from "./search";
 
 const Mouse = 2;
 const Cheese = 3;
@@ -114,6 +114,8 @@ function getTile(board, type) {
 }
 
 function renderBoard(board, graph, distanceMap, algorithm) {
+
+    console.log(board);
 
     const newBoard = copyBoard(board);
     let status = '';
@@ -260,4 +262,17 @@ function countCheese(board) {
     return count;
 }
 
-export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard, getDistanceMap}
+function cleanBoard(board) {
+    board = copyBoard(board);
+    unVisit(board);
+    for (let i=0; i < board.length; i++) {
+        for (let j=0; j < board.length; j++) {
+            if (board[i][j] % Path === 0) {
+                board[i][j] /= Path;
+            }
+        }
+    }
+    return board;
+}
+
+export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard, getDistanceMap, cleanBoard}

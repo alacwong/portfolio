@@ -1,7 +1,7 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
 import {generateMaze, unVisit} from "../scripts/search";
-import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard, getDistanceMap} from "../scripts/ai";
+import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard, getDistanceMap, cleanBoard} from "../scripts/ai";
 
 
 export default class Ai extends Component{
@@ -20,21 +20,22 @@ export default class Ai extends Component{
 
         let animator = setInterval(() => {
 
-            unVisit(this.state.board);
             const [board, state] = renderBoard(
-                this.state.board,
+                cleanBoard(this.state.board),
                 this.state.graph,
                 this.state.distanceMap,
                 'a-star'
             );
-            this.setState({board: board});
-            if (state === 'Lose') {
-                clearInterval(animator);
-                window.alert('Toast!');
-            } else if (state === 'Win') {
-                clearInterval(animator);
-                window.alert('Mouse wins!');
-            }
+            this.setState({board: board},
+                () => {
+                    if (state === 'Lose') {
+                        clearInterval(animator);
+                        window.alert('Toast!');
+                    } else if (state === 'Win') {
+                        clearInterval(animator);
+                        window.alert('Mouse wins!');
+                    }
+                });
         } ,150);
 
     }
@@ -52,15 +53,16 @@ export default class Ai extends Component{
                 }
 
                 let img;
-                if (this.state.board[i][j] % Mouse === 0) {
+
+                if (this.state.board[i][j] % Cat === 0) {
+                    img = <img src={'assets/cat.png'}/>
+                } else if (this.state.board[i][j] % Mouse === 0) {
                     img = <img src={'assets/mouse.png'}/>
                 } else if (this.state.board[i][j] % Cheese === 0) {
                     img = <img src={'assets/cheese.jpg'}/>
                 }else if (this.state.board[i][j] % Path === 0){
                     img = <img src={'assets/path.jpg'}/>
-                } else if (this.state.board[i][j] % Cat === 0) {
-                    img = <img src={'assets/cat.png'}/>
-                }else {
+                } else {
                     img = ''
                 }
 
