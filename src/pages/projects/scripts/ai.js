@@ -52,14 +52,14 @@ function getDistanceMap(graph) {
         distanceMap.push(row);
     }
 
+    let k = 0
     // run bfs multiple times
     for (let i=0; i < graph.n * graph.n; i++) {
         let q = [i];
         distanceMap[i][i] = 0;
-        while (q.length) {
-            let node = q.unshift();
-            let neighbors = graph.getIndices();
-
+        while (q.length > 0) {
+            let node = q.shift();
+            let neighbors = graph.getIndices(node);
             for (let neighbor of neighbors) {
                 if (distanceMap[i][neighbor] === -1) {
                     distanceMap[i][neighbor] = distanceMap[i][node] + 1;
@@ -68,6 +68,8 @@ function getDistanceMap(graph) {
             }
         }
     }
+
+    console.log(distanceMap);
 
     return distanceMap;
 }
@@ -114,7 +116,7 @@ function getTile(board, type) {
     return tiles;
 }
 
-function renderBoard(board, graph) {
+function renderBoard(board, graph, distanceMap) {
 
     board = copyBoard(board);
 
@@ -216,4 +218,4 @@ function heuristic(board, mouse, graph, distanceMap) {
     return cost;
 }
 
-export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard}
+export {Mouse, Cheese, Visited, Path, Cat, generateBoard, renderBoard, getDistanceMap}

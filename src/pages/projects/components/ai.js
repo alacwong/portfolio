@@ -1,25 +1,26 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
 import {generateMaze} from "../scripts/search";
-import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard} from "../scripts/ai";
+import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard, getDistanceMap} from "../scripts/ai";
 
 
 export default class Ai extends Component{
 
     constructor(props) {
         super(props);
-        this.state = {
-            graph: generateMaze(20),
-            board: generateBoard(20),
-        }
+
+        const [graph, board] = [generateMaze(20), generateBoard(20)];
+        const distanceMap = getDistanceMap(graph);
+        this.state = { graph, board, distanceMap};
 
         this.animateBoard = this.animateBoard.bind(this);
     }
 
     animateBoard() {
 
+        console.log(this.state.distanceMap);
         let animator = setInterval(() => {
-                const [board, state] = renderBoard(this.state.board, this.state.graph);
+                const [board, state] = renderBoard(this.state.board, this.state.graph, this.state.distanceMap);
                 this.setState({board: board});
                 if (state === 'Lose') {
                     clearInterval(animator);
