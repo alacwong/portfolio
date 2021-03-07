@@ -1,7 +1,8 @@
 import React, {Component, useState} from "react";
 import FadeIn from "react-fade-in";
-import {generateMaze, unVisit} from "../scripts/search";
+import {generateMaze, copyBoard} from "../scripts/search";
 import {Cat, Mouse, Path, Visited, Cheese, generateBoard, renderBoard, getDistanceMap, cleanBoard} from "../scripts/ai";
+import ReactBootstrapSlider from "react-bootstrap-slider";
 
 
 export default class Ai extends Component{
@@ -9,11 +10,15 @@ export default class Ai extends Component{
     constructor(props) {
         super(props);
 
-        const [graph, board] = [generateMaze(20), generateBoard(20)];
-        const distanceMap = getDistanceMap(graph);
-        this.state = { graph, board, distanceMap};
-
+        const [graph, board, catIQ] = [generateMaze(20), generateBoard(20), 125];
+        const [distanceMap, memoBoard ]= [getDistanceMap(graph), copyBoard(board)] ;
+        this.state = { graph, board, distanceMap, memoBoard, catIQ};
         this.animateBoard = this.animateBoard.bind(this);
+        this.updateIQ = this.updateIQ.bind(this);
+    }
+
+    updateIQ(e) {
+        this.setState({catIQ: Number(e.target.value)});
     }
 
     animateBoard() {
@@ -25,16 +30,18 @@ export default class Ai extends Component{
                 this.state.graph,
                 this.state.distanceMap,
                 'a-star',
-                100
+                this.state.catIQ
             );
             this.setState({board: board},
                 () => {
                     if (state === 'Lose') {
                         clearInterval(animator);
                         window.alert('Toast!');
+                        this.setState({board: this.state.memoBoard});
                     } else if (state === 'Win') {
                         clearInterval(animator);
                         window.alert('Mouse wins!');
+                        this.setState({board: this.state.memoBoard});
                     }
                 });
         } ,150);
@@ -85,9 +92,23 @@ export default class Ai extends Component{
                     <div className='search-board'>
                         {board}
                     </div>
-                    <div className='search-description'>
-                        {/*<p>Watching a cat eat cheese uncontested isn't that interesting, let's add a few cats to this!</p>*/}
-                        <button onClick={this.animateBoard}></button>
+                    <div className='ai-description'>
+                        <p>Watching a cat eat cheese uncontested isn't that interesting,
+                            let's add a few cats to this!</p>
+                        <p>Visualizations for different Path-finding Ai's that try to collect all the cheese
+                        without getting caught by cats! (More coming son)</p>
+                        <button onClick={this.animateBoard}> Run</button>
+                        <span className='slider'>
+                           <label>Cat IQ</label>
+                            <ReactBootstrapSlider
+                                change={this.updateIQ}
+                                orientation="horizontal"
+                                value={this.state.catIQ}
+                                step={1}
+                                max={137}
+                                min={90}
+                            />
+                        </span>
                     </div>
                 </div>
             </FadeIn>
