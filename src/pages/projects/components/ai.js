@@ -106,7 +106,7 @@ export default class Ai extends Component{
                                 value={this.state.catIQ}
                                 step={1}
                                 max={137}
-                                min={90}
+                                min={113}
                             />
                         </span>
                     </div>
