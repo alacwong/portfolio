@@ -189,7 +189,9 @@ function AStarSearch(board, graph, h, distanceMap) {
     let q = [[graph.hash(mouse), 0]];
     let distance = {};
     let path = [];
+    let safety = {}
     distance[graph.hash(mouse)] = 0;
+    safety[graph.hash(mouse)] = 0
 
 
     // function to mark back path
@@ -198,6 +200,20 @@ function AStarSearch(board, graph, h, distanceMap) {
         board[n][m] *= Path;
         if (parent[graph.hash(node)] !== undefined) {
             markPath(graph.unHash(parent[graph.hash(node)]));
+        }
+    }
+
+
+    // function to calculate path safety
+    const computeSafety = (neighborList) => {
+        if (neighborList.length === 1) {
+            return 40;
+        } else if( neighborList.length === 2 ) {
+            return 5;
+        } else if (neighborList.length === 3) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
@@ -232,7 +248,11 @@ function AStarSearch(board, graph, h, distanceMap) {
             if (board[x][y] % Visited !== 0 && !q.map(node => node[0]).includes(graph.hash([x, y]))) {
                 parent[graph.hash(neighbor)] = graph.hash([i, j]);
                 distance[graph.hash(neighbor)] = distance[graph.hash([i, j])] + 1
-                q.push([graph.hash(neighbor), h(neighbor, board, graph, distanceMap) + distance[graph.hash(neighbor)]]);
+                safety[graph.hash(neighbor)] = safety[graph.hash([i, j])] + computeSafety(graph.get(neighbor));
+                q.push(
+                    [graph.hash(neighbor), h(neighbor, board, graph, distanceMap, safety, [i, j]) +
+                    distance[graph.hash(neighbor)]]
+                );
             }
         }
     }
@@ -240,27 +260,38 @@ function AStarSearch(board, graph, h, distanceMap) {
     return path;
 }
 
-function heuristic(node, board, graph, distanceMap) {
+function heuristic(node, board, graph, distanceMap, safetyMap, currentNode) {
+
+
     // exponential distance of cat
     const cats = getTile(board, Cat);
     const cheeses = getTile(board, Cheese);
     const nodeIndex = graph.hash(node);
+    const currentNodeIndex = graph.hash(node);
     let cost = 0;
+    let danger = 0;
+    let cheeseWeight = 2.5;
 
     // cost of cat
     // exponential as you get closer to the cat
     for (const cat of cats) {
         let catIndex = graph.hash(cat);
-        cost += 60 * Math.pow(0.6, distanceMap[catIndex][nodeIndex]);
+        cost += 80 * Math.pow(0.75, distanceMap[catIndex][nodeIndex]);
+        danger += 80 *  Math.pow(0.75, distanceMap[catIndex][currentNodeIndex]);
     }
 
-    console.log('Cat cost', cost);
+    //evoke survival mode
+    console.log(danger);
+    if (danger > 19) {
+        cheeseWeight = 0.5;
+        cost += 0.5 * safetyMap[nodeIndex];
+    }
 
     // add cost of getting to cheese (linear)
     cost  += cheeses.reduce( (acc, cheese) => {
             const cheeseIndex = graph.hash(cheese);
-            return Math.min(  distanceMap[nodeIndex][cheeseIndex], acc)
-        }, graph.n
+            return Math.min( cheeseWeight * distanceMap[nodeIndex][cheeseIndex], acc)
+        }, cheeseWeight * graph.n
     )
 
     console.log(cost);
