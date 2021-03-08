@@ -93,10 +93,10 @@ export default class Ai extends Component{
                         {board}
                     </div>
                     <div className='ai-description'>
-                        <p>Watching a cat eat cheese uncontested isn't that interesting,
+                        <p>Watching a Mouse eat cheeses uncontested isn't that interesting,
                             let's add a few cats to this!</p>
                         <p>Visualizations for different Path-finding Ai's that try to collect all the cheese
-                        without getting caught by cats! (More coming son)</p>
+                        without getting caught by cats! (More coming soon)</p>
                         <button onClick={this.animateBoard}> Run</button>
                         <span className='slider'>
                            <label>Cat IQ</label>
