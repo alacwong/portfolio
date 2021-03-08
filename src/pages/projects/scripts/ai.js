@@ -90,7 +90,7 @@ function generateBoard(n) {
     // generate board with cats
     const board = generateBoardOld(n);
 
-    const numCats = Math.ceil(1 + Math.random()* 3);
+    const numCats = Math.ceil(1 + Math.random()* 2);
 
     for (let i=0; i < numCats; i++) {
        let [x, y] = [Math.floor(Math.random() * n), Math.floor(Math.random() * n)]
