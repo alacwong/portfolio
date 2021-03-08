@@ -281,7 +281,6 @@ function heuristic(node, board, graph, distanceMap, safetyMap, currentNode) {
     }
 
     //evoke survival mode
-    console.log(danger);
     if (danger > 19) {
         cheeseWeight = 0.5;
         cost += 0.5 * safetyMap[nodeIndex];
@@ -294,7 +293,6 @@ function heuristic(node, board, graph, distanceMap, safetyMap, currentNode) {
         }, cheeseWeight * graph.n
     )
 
-    console.log(cost);
     return cost;
 }
 
