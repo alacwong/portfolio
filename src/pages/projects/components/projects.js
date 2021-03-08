@@ -7,10 +7,10 @@ import Ai from "./ai";
 export default function Projects() {
     return  (
         <div>
-            <NQueens/>
-            <MvpClassifier/>
             <Search/>
             <Ai/>
+            <MvpClassifier/>
+            <NQueens/>
         </div>
     )
 }
