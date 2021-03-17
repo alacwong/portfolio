@@ -132,6 +132,13 @@ function renderBoard(board, graph, distanceMap, algorithm, iq) {
             [i, j] = path[1];
             newBoard[i][j] *= Mouse;
 
+            // check if death
+            if (newBoard[i][j] % Cat === 0) {
+                status = 'Lose';
+                return [newBoard, status];
+            }
+
+            // check win condition
             if (newBoard[i][j] % Cheese === 0) {
                 newBoard[i][j] /= Cheese;
                 if (countCheese(newBoard) === 0) {
