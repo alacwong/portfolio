@@ -9,7 +9,7 @@ export default function MvpClassifier() {
 
     const [k, setK] = useState(1);
 
-    let url = `https://floating-peak-48444.herokuapp.com?k=${k}`;
+    let url = `https://mvp-server-rdwhag42na-uc.a.run.app/?k=${k}`;
 
     const [data, setData] = useState({
         'Try out': 'This API',
